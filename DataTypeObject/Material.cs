@@ -2,7 +2,7 @@
 
 namespace DataTypeObject
 {
-    public class Class1
+    public class Material
     {
     }
 }
