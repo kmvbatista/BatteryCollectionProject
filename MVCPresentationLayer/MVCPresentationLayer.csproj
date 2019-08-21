@@ -11,4 +11,10 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLogicalLayer\BusinessLogicalLayer.csproj" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="..\DataTypeObject\DataTypeObject.csproj" />
+  </ItemGroup>
+
 </Project>
