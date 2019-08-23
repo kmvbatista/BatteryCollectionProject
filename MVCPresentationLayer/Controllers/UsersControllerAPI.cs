@@ -20,12 +20,6 @@ namespace WebPresentationLayer.Controllers
             userBLL = _userBLL;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]

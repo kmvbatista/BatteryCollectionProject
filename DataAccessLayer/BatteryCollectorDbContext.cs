@@ -6,9 +6,9 @@ using DataTypeObject;
 
 namespace DataAccessLayer
 {
-    public class UserDbContext : DbContext
+    public class BatteryCollectorDbContext : DbContext
     {
-        public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
+        public BatteryCollectorDbContext(DbContextOptions<BatteryCollectorDbContext> options) : base(options)
         {
 
         }

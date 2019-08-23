@@ -35,7 +35,7 @@ namespace MVCPresentationLayer
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });**/
 
-            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default Connection")));
+            services.AddDbContext<BatteryCollectorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default Connection")));
             services.AddTransient<ICRUD, UserBLL>();
 
 
