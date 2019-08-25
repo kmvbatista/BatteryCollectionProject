@@ -13,6 +13,7 @@ namespace DataTypeObject
         public string Email { get; set; }
         public string CelphoneNumber { get; set; }
         public string Password { get; set; }
+        public int TotalPoints { get; set; }
 
         public User()
         {

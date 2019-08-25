@@ -35,7 +35,8 @@ namespace MVCPresentationLayer
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });**/
 
-            services.AddDbContext<BatteryCollectorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default Connection")));
+            services.AddDbContext<BatteryCollectorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<ICRUD, UserBLL>();
 
 
@@ -45,6 +46,13 @@ namespace MVCPresentationLayer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseMvc();
+
+            /*
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,6 +73,7 @@ namespace MVCPresentationLayer
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            */
         }
     }
 }

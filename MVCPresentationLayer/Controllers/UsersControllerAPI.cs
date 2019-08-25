@@ -20,6 +20,15 @@ namespace WebPresentationLayer.Controllers
             userBLL = _userBLL;
         }
 
+        public IActionResult Login(string email, string password)
+        { 
+            User userFound= userBLL.Authenticate(email, password);
+            if(userFound != null)
+            {
+                return new ObjectResult(userFound);
+            }
+            return NotFound();
+        }
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
@@ -34,7 +43,6 @@ namespace WebPresentationLayer.Controllers
             {
                 return NotFound();
             }
-
             return new ObjectResult(userFound);
         }
 
@@ -73,7 +81,7 @@ namespace WebPresentationLayer.Controllers
             }
             try
             {
-                userBLL.Update(user, userFound);
+                userBLL.Update(user);
             }
             catch(Exception)
             {

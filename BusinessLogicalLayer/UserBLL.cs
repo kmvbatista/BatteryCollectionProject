@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DataAccessLayer;
 using DataTypeObject;
+using System.Linq;
 
 namespace BusinessLogicalLayer
 {
@@ -33,7 +34,8 @@ namespace BusinessLogicalLayer
 
         public IEnumerable<User> GetAll()
         {
-            return userDbContext.Users;
+            //return userDbContext.Users.;
+            return userDbContext.Users.ToList();
         }
 
         public void Remove(int Id)
@@ -61,7 +63,7 @@ namespace BusinessLogicalLayer
 
         public User Authenticate(string username, string password)
         {
-            return new User();
+            return userDbContext.Users.FirstOrDefault(u => u.Email == username && u.Password == password);
         }
     }
 }
