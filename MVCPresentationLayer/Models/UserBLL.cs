@@ -5,14 +5,14 @@ using DataAccessLayer;
 using DataTypeObject;
 using System.Linq;
 
-namespace BusinessLogicalLayer
+namespace MVCPresentationLayer.Models
 {
     public class UserBLL : ICRUD
     {
         private readonly BatteryCollectorDbContext userDbContext;
-        public UserBLL(BatteryCollectorDbContext userDbContext)
+        public UserBLL(BatteryCollectorDbContext _userDbContext)
         {
-            this.userDbContext = userDbContext;
+            userDbContext = _userDbContext;
         }
 
         public void Add(User user)
@@ -22,6 +22,8 @@ namespace BusinessLogicalLayer
             //adicionar outros métodos de validação e implementá-los
 
             userDbContext.Add(user);
+            userDbContext.SaveChanges();
+
         }
 
 
@@ -53,7 +55,7 @@ namespace BusinessLogicalLayer
 
         private void validateCpf(string cPF)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void validateEmail(string email)

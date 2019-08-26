@@ -1,48 +1,116 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using DataTypeObject;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using BusinessLogicalLayer;
+using MVCPresentationLayer.Models;
 
-namespace MVCPresentationLayer.Controllers
+namespace WebPresentationLayer.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // GET: api/Users
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ICRUD userBLL;
+
+        public UsersController(ICRUD _userBLL)
         {
-            return new string[] { "value1", "value2" };
+            userBLL = _userBLL;
+        }
+
+        [HttpGet]
+        public IEnumerable<User> GetAll()
+        {
+            return userBLL.GetAll();
+        }
+
+
+        public IActionResult Login(string email, string password)
+        { 
+            User userFound= userBLL.Authenticate(email, password);
+            if(userFound != null)
+            {
+                return new ObjectResult(userFound);
+            }
+            return NotFound();
         }
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult GetById(int id)
         {
-
-            return "value";
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            var userFound = userBLL.Find(id);
+            if (userFound == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(userFound);
         }
 
         // POST: api/Users
+        
+
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Create([FromBody] User user)//indica que o usuário vem pelo body da requisição
         {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            userBLL.Add(user);
+            return CreatedAtRoute("GetUser", new { id = user.Id }, user);//cria uma URI que retorna o usuário recém-criado
         }
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] User user)
         {
+            if (user == null || user.Id != id)
+            {
+                return BadRequest();
+            }
+
+            User userFound = userBLL.Find(id);
+            if (userFound == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                userBLL.Update(user);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+            return new NoContentResult();
         }
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var user = userBLL.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                userBLL.Remove(id);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+
+            return new NoContentResult();
         }
     }
 }

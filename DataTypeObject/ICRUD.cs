@@ -15,5 +15,7 @@ namespace DataTypeObject
         void Remove(int Id);
 
         void Update(User user);
+
+        User Authenticate(string username, string password);
     }
 }

@@ -11,6 +11,11 @@ namespace BusinessLogicalLayer
             throw new NotImplementedException();
         }
 
+        public User Authenticate(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public User Find(int Id)
         {
             throw new NotImplementedException();
