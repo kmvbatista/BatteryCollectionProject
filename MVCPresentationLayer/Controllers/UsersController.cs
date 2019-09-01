@@ -3,13 +3,11 @@ using DataTypeObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using BusinessLogicalLayer;
-using MVCPresentationLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebPresentationLayer.Controllers
 {
-
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -27,7 +25,8 @@ namespace WebPresentationLayer.Controllers
             return userBLL.GetAll();
         }
 
-
+        /*
+        [HttpPost]
         public IActionResult Login(string email, string password)
         { 
             User userFound= userBLL.Authenticate(email, password);
@@ -37,6 +36,7 @@ namespace WebPresentationLayer.Controllers
             }
             return NotFound();
         }
+        */
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]

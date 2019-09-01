@@ -28,11 +28,8 @@ namespace MVCPresentationLayer.Models
             userDbContext.SaveChanges();
         }
 
-        
-
         public User Find(int _Id)
         {
-
             return userDbContext.Users.Find(_Id);
         }
 
@@ -53,6 +50,30 @@ namespace MVCPresentationLayer.Models
         {
             userDbContext.Update(user);
             userDbContext.SaveChanges();
+        }
+        public User Authenticate(string username, string password)
+        {
+                validateEmail(username);
+                validatePasswordString(password);
+                if (errors.Count > 0)
+                {
+                    return null;
+                }
+                return userDbContext.Users.FirstOrDefault(u => u.Email == username && u.Password == password);
+        }
+
+        private void validatePasswordString(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                errors.Add(new ErrorField());
+
+            }
+            else if (password.Length < 8)
+            {
+                errors.Add(new ErrorField());
+
+            }
         }
 
         private void validateCpf(User user)
@@ -121,9 +142,6 @@ namespace MVCPresentationLayer.Models
             }
         }
 
-        public User Authenticate(string username, string password)
-        {
-            return userDbContext.Users.FirstOrDefault(u => u.Email == username && u.Password == password);
-        }
+        
     }
 }
