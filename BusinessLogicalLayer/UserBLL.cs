@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System;
 using BusinessLogicalLayer.Extensions;
 
-namespace MVCPresentationLayer.Models
+namespace BusinessLogicalLayer
 {
     public class UserBLL : ICRUD
     {
@@ -51,6 +51,7 @@ namespace MVCPresentationLayer.Models
             userDbContext.Update(user);
             userDbContext.SaveChanges();
         }
+
         public User Authenticate(string username, string password)
         {
                 validateEmail(username);
