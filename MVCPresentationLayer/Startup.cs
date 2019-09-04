@@ -35,7 +35,7 @@ namespace MVCPresentationLayer
             services.AddDbContext<BatteryCollectorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<ICRUD, UserBLL>();
-
+            services.AddTransient<IUSERPOINTSCRUD, UserPointBLL>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

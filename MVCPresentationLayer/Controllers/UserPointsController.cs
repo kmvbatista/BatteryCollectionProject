@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DataTypeObject;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebPresentationLayer.Controllers
@@ -10,26 +8,20 @@ namespace WebPresentationLayer.Controllers
     [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UserPointsController : ControllerBase
     {
-        private readonly ICRUD userBLL;
+        private readonly IUSERPOINTSCRUD userPointsBLL;
 
-        public UsersController(ICRUD _userBLL)
+        public UserPointsController(IUSERPOINTSCRUD _userPointsBLL)
         {
-            userBLL = _userBLL;
-        }
-
-        [HttpGet]
-        public IEnumerable<User> GetAll()
-        {
-            return userBLL.GetAll();
+            userPointsBLL = _userPointsBLL;
         }
 
         /*
         [HttpPost]
         public IActionResult Login(string email, string password)
         { 
-            User userFound= userBLL.Authenticate(email, password);
+            User userFound= userPointsBLL.Authenticate(email, password);
             if(userFound != null)
             {
                 return new ObjectResult(userFound);
@@ -46,7 +38,7 @@ namespace WebPresentationLayer.Controllers
             {
                 return BadRequest();
             }
-            var userFound = userBLL.Find(id);
+            var userFound = userPointsBLL.Find(id);
             if (userFound == null)
             {
                 return NotFound();
@@ -58,35 +50,33 @@ namespace WebPresentationLayer.Controllers
         
 
         [HttpPost]
-        public IActionResult Create([FromBody] User user)//indica que o usuário vem pelo body da requisição
+        public IActionResult Create([FromBody] UserPoints userPoints)//indica que o usuário vem pelo body da requisição
         {
-            if (user == null)
+            if (userPoints == null)
             {
                 return BadRequest();
             }
-            userBLL.Add(user);
-            //return CreatedAtRoute("GetUser", new { id = user.Id }, user);//cria uma URI que retorna o usuário recém-criado
+            userPointsBLL.Add(userPoints);
             return Accepted();
-
         }
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] User user)
+        public IActionResult Put(int id, [FromBody] UserPoints userPoints)
         {
-            if (user == null || user.Id != id)
+            if (userPoints == null || userPoints.Id != id)
             {
                 return BadRequest();
             }
 
-            User userFound = userBLL.Find(id);
-            if (userFound == null)
+            UserPoints userPointsFound = userPointsBLL.Find(id);
+            if (userPointsFound == null)
             {
                 return NotFound();
             }
             try
             {
-                userBLL.Update(user);
+                userPointsBLL.Update(userPointsFound);
             }
             catch(Exception)
             {
@@ -98,14 +88,14 @@ namespace WebPresentationLayer.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = userBLL.Find(id);
+            var user = userPointsBLL.Find(id);
             if (user == null)
             {
                 return NotFound();
             }
             try
             {
-                userBLL.Remove(id);
+                userPointsBLL.Remove(id);
             }
             catch(Exception)
             {
