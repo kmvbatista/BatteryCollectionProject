@@ -19,6 +19,7 @@ namespace BusinessLogicalLayer
 
         public void Add(User user)
         {
+
             validateEmail(user.Email);
             validateCpf(user);
             validateCellphone(user.CelphoneNumber);
