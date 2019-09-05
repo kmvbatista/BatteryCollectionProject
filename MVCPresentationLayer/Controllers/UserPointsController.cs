@@ -31,7 +31,7 @@ namespace WebPresentationLayer.Controllers
         */
 
         // GET: api/Users/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet]
         public IActionResult GetById(int id)
         {
             if (id == 0)
