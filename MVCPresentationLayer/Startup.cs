@@ -53,7 +53,7 @@ namespace MVCPresentationLayer
                 
                 });
 
-
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -66,6 +66,7 @@ namespace MVCPresentationLayer
             }
             app.UseAuthentication();
             app.UseMvc();
+            app.UseCors(option => option.AllowAnyOrigin()); 
 
             /*
             if (env.IsDevelopment())
