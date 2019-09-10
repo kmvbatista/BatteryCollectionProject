@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using BusinessLogicalLayer;
+using Microsoft.AspNetCore.Cors;
 
 namespace MVCPresentationLayer.Controllers
 {
@@ -24,7 +25,7 @@ namespace MVCPresentationLayer.Controllers
             _configuration = configuration;
             _userBLL = userBLL;
         }
-
+        [EnableCors]
         [AllowAnonymous]
         [HttpPost]
         public IActionResult RequestToken([FromBody] User request)
