@@ -66,7 +66,7 @@ namespace MVCPresentationLayer
             }
             app.UseAuthentication();
             app.UseMvc();
-            app.UseCors(option => option.AllowAnyOrigin()); 
+            app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()); 
 
             /*
             if (env.IsDevelopment())
