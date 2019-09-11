@@ -25,7 +25,7 @@ namespace MVCPresentationLayer.Controllers
             _configuration = configuration;
             _userBLL = userBLL;
         }
-        [EnableCors]
+        
         [AllowAnonymous]
         [HttpPost]
         public IActionResult RequestToken([FromBody] User request)

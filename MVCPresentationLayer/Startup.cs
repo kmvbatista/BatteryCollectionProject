@@ -21,7 +21,7 @@ namespace MVCPresentationLayer
         }
 
         public IConfiguration Configuration { get; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -53,8 +53,15 @@ namespace MVCPresentationLayer
                 
                 });
 
-            services.AddCors();
             services.AddMvc();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,9 +71,10 @@ namespace MVCPresentationLayer
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
+
             app.UseMvc();
-            app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()); 
 
             /*
             if (env.IsDevelopment())
