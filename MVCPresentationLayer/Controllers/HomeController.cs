@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MVCPresentationLayer.Models;
 
 namespace MVCPresentationLayer.Controllers
 {
@@ -37,7 +36,7 @@ namespace MVCPresentationLayer.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            throw new NotImplementedException();
         }
     }
 }
