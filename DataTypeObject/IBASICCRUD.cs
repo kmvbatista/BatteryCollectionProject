@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataTypeObject
 {
-    public interface ICRUD
+    public interface IBASICCRUD
     {
         void Add(User user);
 
@@ -15,7 +15,5 @@ namespace DataTypeObject
         void Remove(int Id);
 
         void Update(User user);
-
-        User Authenticate(string username, string password);
     }
 }

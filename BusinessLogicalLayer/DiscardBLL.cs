@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using DataTypeObject;
 
 namespace BusinessLogicalLayer
 {
-    public class MaterialBLL : IBASICCRUD
+    public class DiscardBLL : IBASICCRUD
     {
         public void Add(User user)
         {

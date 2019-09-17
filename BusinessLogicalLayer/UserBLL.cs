@@ -8,7 +8,7 @@ using BusinessLogicalLayer.Extensions;
 
 namespace BusinessLogicalLayer
 {
-    public class UserBLL : ICRUD
+    public class UserBLL : IUSERCRUD
     {
         List<ErrorField> errors = new List<ErrorField>();
         private readonly BatteryCollectorDbContext userDbContext;
@@ -21,8 +21,6 @@ namespace BusinessLogicalLayer
         {
 
             validateEmail(user.Email);
-            validateCpf(user);
-            validateCellphone(user.CelphoneNumber);
             //adicionar outros métodos de validação e implementá-los
 
             userDbContext.Add(user);
@@ -78,27 +76,6 @@ namespace BusinessLogicalLayer
             }
         }
 
-        private void validateCpf(User user)
-        {
-            if (string.IsNullOrWhiteSpace(user.CPF))
-            {
-                ErrorField error = new ErrorField()
-                {
-                    Error = "Nome deve ser informado.",
-                    PropertyName = "Nome"
-                };
-                errors.Add(error);
-            }
-            else if (!user.CPF.IsValidCPF())
-            {
-                ErrorField error = new ErrorField()
-                {
-                    Error = "CPF inválido.",
-                    PropertyName = "CPF"
-                };
-                errors.Add(error);
-            }
-        }
 
         private void validateEmail(string Email)
         {

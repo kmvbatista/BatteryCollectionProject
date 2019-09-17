@@ -2,6 +2,7 @@
 using DataAccessLayer;
 using DataTypeObject;
 using System.Linq;
+using System;
 
 namespace BusinessLogicalLayer
 {
@@ -17,7 +18,7 @@ namespace BusinessLogicalLayer
         public void Add(UserPoints userPoints)
         {
             //adicionar outros métodos de validação e implementá-los
-
+            userPoints.Date = DateTime.Now.AddMonths(1);
             userPointsDbContext.Add(userPoints);
             userPointsDbContext.SaveChanges();
         }
@@ -27,16 +28,19 @@ namespace BusinessLogicalLayer
             return userPointsDbContext.UserPoints.Find(Id);
         }
 
-        public IEnumerable<UserPoints> GetAll()
+        public IEnumerable<UserPoints> GetMonthlyPoints()
         {
-            return userPointsDbContext.UserPoints.ToList();
+            return userPointsDbContext.UserPoints.Where(x => x.Date.Month == DateTime.Now.Month);
         }
 
-        public void Remove(int Id)
+        public IEnumerable<UserPoints> GetYearPoints()
         {
-            var userPointsFound = userPointsDbContext.Users.Find(Id);
-            userPointsDbContext.Users.Remove(userPointsFound);
-            userPointsDbContext.SaveChanges();
+            return userPointsDbContext.UserPoints.Where(x => x.Date.Year == DateTime.Now.Year);
+        }
+
+        public double GetTotalPoints()
+        {
+            return userPointsDbContext.UserPoints.ToList().Count;
         }
 
         public void Update(UserPoints userPoints)
@@ -45,9 +49,17 @@ namespace BusinessLogicalLayer
             userPointsDbContext.SaveChanges();
         }
 
-        public User FindUser(int UserId)
+
+        IEnumerable<UserPoints> IUSERPOINTSCRUD.GetAllDataPoints(User user)
         {
-            return userPointsDbContext.Users.FirstOrDefault(user => user.Id.Equals(UserId));
+            try
+            {
+                return userPointsDbContext.UserPoints.ToList();
+            }
+            catch
+            {
+                throw new Exception();
+            }
         }
     }
 }

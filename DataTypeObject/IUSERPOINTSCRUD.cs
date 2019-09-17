@@ -8,13 +8,13 @@ namespace DataTypeObject
     {
        void Add(UserPoints userPoints);
 
-        void Remove(int Id);
-
         void Update(UserPoints userPoints);
 
-        User FindUser(int UserId);
+        IEnumerable<UserPoints> GetMonthlyPoints();
 
         UserPoints Find(int Id);
-
+        IEnumerable<UserPoints> GetYearPoints();
+        double GetTotalPoints();
+        IEnumerable<UserPoints> GetAllDataPoints(User user);
     }
 }

@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using DataTypeObject;
+﻿using DataTypeObject;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLogicalLayer;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace WebPresentationLayer.Controllers
 {
@@ -11,10 +16,12 @@ namespace WebPresentationLayer.Controllers
     public class UserPointsController : ControllerBase
     {
         private readonly IUSERPOINTSCRUD userPointsBLL;
+        private readonly IUSERCRUD _userBLL;
 
-        public UserPointsController(IUSERPOINTSCRUD _userPointsBLL)
+        public UserPointsController(IUSERPOINTSCRUD _userPointsBLL, IUSERCRUD userBLL)
         {
             userPointsBLL = _userPointsBLL;
+            this._userBLL = userBLL;
         }
 
         /*
@@ -31,19 +38,18 @@ namespace WebPresentationLayer.Controllers
         */
 
         // GET: api/Users/5
-        [HttpGet]
-        public IActionResult GetById(int id)
+        [HttpGet("{totalnumber}")]
+        public IActionResult GetTotalPoints(User user)
         {
-            if (id == 0)
+            try
             {
-                return BadRequest();
+                double userPointsFound = this.userPointsBLL.GetTotalPoints();
+                return new OkObjectResult(userPointsFound);
             }
-            var userFound = userPointsBLL.Find(id);
-            if (userFound == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex);
             }
-            return new ObjectResult(userFound);
         }
 
         // POST: api/Users
@@ -58,6 +64,20 @@ namespace WebPresentationLayer.Controllers
             }
             userPointsBLL.Add(userPoints);
             return Accepted();
+        }
+
+        [HttpGet("{allpoints}")]
+        public IActionResult GetAllDataPoints(User user)
+        {
+            try
+            {
+                IEnumerable<UserPoints> allUserPoints =  userPointsBLL.GetAllDataPoints(user);
+                return new OkObjectResult(allUserPoints);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Erro no acesso ao banco de dados: "+ ex);
+            }
         }
 
         // PUT: api/Users/5
@@ -85,24 +105,5 @@ namespace WebPresentationLayer.Controllers
             return new NoContentResult();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var user = userPointsBLL.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            try
-            {
-                userPointsBLL.Remove(id);
-            }
-            catch(Exception)
-            {
-                return BadRequest();
-            }
-
-            return new NoContentResult();
-        }
     }
 }

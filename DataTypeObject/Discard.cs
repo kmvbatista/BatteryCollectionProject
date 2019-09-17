@@ -12,6 +12,8 @@ namespace DataTypeObject
         public User User { get; set; }
         public int UserId { get; set; }
         public int Points { get; set; }
+        public Place Place { get; set; }
+        public int IdPlace { get; set; }
 
         public Discard()
         {
