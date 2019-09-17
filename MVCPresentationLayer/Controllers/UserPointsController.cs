@@ -24,19 +24,6 @@ namespace WebPresentationLayer.Controllers
             this._userBLL = userBLL;
         }
 
-        /*
-        [HttpPost]
-        public IActionResult Login(string email, string password)
-        { 
-            User userFound= userPointsBLL.Authenticate(email, password);
-            if(userFound != null)
-            {
-                return new ObjectResult(userFound);
-            }
-            return NotFound();
-        }
-        */
-
         // GET: api/Users/5
         [HttpGet("{totalnumber}")]
         public IActionResult GetTotalPoints(User user)

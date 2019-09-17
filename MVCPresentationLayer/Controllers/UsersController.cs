@@ -12,9 +12,9 @@ namespace WebPresentationLayer.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ICRUD userBLL;
+        private readonly IUSERCRUD userBLL;
 
-        public UsersController(ICRUD _userBLL)
+        public UsersController(IUSERCRUD _userBLL)
         {
             userBLL = _userBLL;
         }

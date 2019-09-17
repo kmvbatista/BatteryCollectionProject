@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataTypeObject
 {
-    public interface IBASICCRUD
+    public interface IPLACECRUD
     {
         void Add(User user);
 
