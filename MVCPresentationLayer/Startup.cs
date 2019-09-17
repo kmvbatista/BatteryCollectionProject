@@ -35,10 +35,10 @@ namespace MVCPresentationLayer
             services.AddDbContext<BatteryCollectorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<IUSERCRUD, UserBLL>();
-            services.AddTransient<IUSERPOINTSCRUD, UserPointBLL>();
             services.AddTransient<IMATERIALCRUD, MaterialBLL>();
-            services.AddTransient<IPLACECRUD, PlaceBLL>();
             services.AddTransient<IDISCARDCRUD, DiscardBLL>();
+            services.AddTransient<IPLACECRUD, PlaceBLL>();
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

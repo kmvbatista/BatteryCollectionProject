@@ -4,7 +4,7 @@ using DataTypeObject;
 
 namespace BusinessLogicalLayer
 {
-    public class MaterialBLL : IBASICCRUD
+    public class MaterialBLL : IMATERIALCRUD
     {
         public void Add(User user)
         {

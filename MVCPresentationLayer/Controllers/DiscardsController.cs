@@ -28,7 +28,8 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                return discardBLL.GetAll();
+                double totalUserDiscards = discardBLL.GetTotalUserDiscards(user);
+                return new OkObjectResult(totalUserDiscards);
             }
             catch (Exception ex)
             {
@@ -48,7 +49,7 @@ namespace MVCPresentationLayer.Controllers
                 {
                     return BadRequest();
                 }
-                discardBLL.Add(discards);
+                discardBLL.Add(discard);
                 return Accepted();
             }
             catch
@@ -58,42 +59,17 @@ namespace MVCPresentationLayer.Controllers
         }
 
         [HttpGet("{alldiscards}")]
-        public IActionResult GetAllDataPoints(User user)
+        public IActionResult GetAllDataDiscards(User user)
         {
             try
             {
-                IEnumerable<Discard> alldiscards = discardBLL.getAllDiscards(user);
+                IEnumerable<Discard> alldiscards = discardBLL.GetAllDataDiscards(user);
                 return new OkObjectResult(alldiscards);
             }
             catch (Exception ex)
             {
                 return BadRequest("Erro no acesso ao banco de dados: " + ex);
             }
-        }
-
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]  Discard discard)
-        {
-            if (discard == null || discard.Id != id)
-            {
-                return BadRequest();
-            }
-
-            Discard discardFound = discardBLL.Find(id);
-            if (discardFound == null)
-            {
-                return NotFound();
-            }
-            try
-            {
-                discardBLL.Update(discardFound);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-            return new NoContentResult();
         }
     }
 }
