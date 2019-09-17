@@ -1,35 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using DataAccessLayer;
 using DataTypeObject;
+using System.Linq;
+using System;
 
 namespace BusinessLogicalLayer
 {
-    public class DiscardBLL : IBASICCRUD
+    public class DiscardBLL : IDISCARDCRUD
     {
-        public void Add(User user)
+        List<ErrorField> errors = new List<ErrorField>();
+        private readonly BatteryCollectorDbContext userPointsDbContext;
+        public DiscardBLL(BatteryCollectorDbContext _userPointsDbContext)
         {
-            throw new NotImplementedException();
+            userPointsDbContext = _userPointsDbContext;
         }
 
-        public User Find(int Id)
+        public void Add(Discard userPoints)
         {
-            throw new NotImplementedException();
+            //adicionar outros métodos de validação e implementá-los
+            userPoints.Date = DateTime.Now.AddMonths(1);
+            userPointsDbContext.Add(userPoints);
+            userPointsDbContext.SaveChanges();
+        }
+        public Discard Find(int Id)
+        {
+            return userPointsDbContext.Discards.Find(Id);
+        }
+        public void Update(Discard userPoints)
+        {
+            userPointsDbContext.Update(userPoints);
+            userPointsDbContext.SaveChanges();
+        }
+        public IEnumerable<Discard> GetMonthlyDiscards()
+        {
+            return userPointsDbContext.Discards.Where(x => x.Date.Month == DateTime.Now.Month);
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Discard> GetYearDiscards()
         {
-            throw new NotImplementedException();
+            return userPointsDbContext.Discards.Where(x => x.Date.Year == DateTime.Now.Year);
+        }
+        public double GetTotalDiscards()
+        {
+            return userPointsDbContext.Discards.ToList().Count;
         }
 
-        public void Remove(int Id)
+        IEnumerable<Discard> IDISCARDCRUD.GetAllDataDiscards(User user)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Update(User user)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                return userPointsDbContext.Discards.ToList();
+            }
+            catch
+            {
+                throw new Exception();
+            }
         }
     }
 }

@@ -6,14 +6,10 @@ namespace DataTypeObject
 {
     public interface IDISCARDCRUD
     {
-        void Add(User user);
-
-        IEnumerable<User> GetAll();
-
-        User Find(int Id);
-
-        void Remove(int Id);
-
-        void Update(User user);
+         IEnumerable<Discard> GetMonthlyDiscards();
+         IEnumerable<Discard> GetYearDiscards();
+         double GetTotalDiscards();
+         IEnumerable<Discard> GetAllDataDiscards(User user);
+        
     }
 }

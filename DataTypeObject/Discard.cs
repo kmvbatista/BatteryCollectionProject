@@ -15,6 +15,7 @@ namespace DataTypeObject
         public Place Place { get; set; }
         public int IdPlace { get; set; }
         public int Quantity { get; set; }
+        public DateTime Date { get; set }
 
         public Discard()
         {

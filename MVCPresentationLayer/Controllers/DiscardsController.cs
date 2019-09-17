@@ -14,79 +14,86 @@ namespace MVCPresentationLayer.Controllers
     [ApiController]
     public class DiscardsController : Controller
     {
-        
-            private readonly IDISCARDCRUD discardBLL;
 
-            public DiscardsController(IDISCARDCRUD _discardBLL)
-            {
+        private readonly IDISCARDCRUD discardBLL;
+
+        public DiscardsController(IDISCARDCRUD _discardBLL)
+        {
             this.discardBLL = _discardBLL;
-            }
+        }
 
-            // GET: api/Users/5
-            [HttpGet("{totalnumber}")]
-            public IActionResult GetAll(User user)
+        // GET: api/Users/5
+        [HttpGet("{totalnumber}")]
+        public IActionResult GetAll(User user)
+        {
+            try
             {
-                try
-                {
-                    
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex);
-                }
+                return discardBLL.GetAll();
             }
-
-            // POST: api/Users
-
-
-            [HttpPost]
-            public IActionResult Create([FromBody] Discard discard)//indica que o usuário vem pelo body da requisição
+            catch (Exception ex)
             {
-                if (false)
-                {
-                    return BadRequest();
-                }
-                userPointsBLL.Add(userPoints);
-                return Accepted();
-            }
-
-            [HttpGet("{allpoints}")]
-            public IActionResult GetAllDataPoints(Discard discard)
-            {
-                try
-                {
-                    IEnumerable<UserPoints> allUserPoints = userPointsBLL.GetAllDataPoints(user);
-                    return new OkObjectResult(allUserPoints);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Erro no acesso ao banco de dados: " + ex);
-                }
-            }
-
-            // PUT: api/Users/5
-            [HttpPut("{id}")]
-            public IActionResult Put(int id, [FromBody]  Discard discard)
-            {
-                if (userPoints == null || userPoints.Id != id)
-                {
-                    return BadRequest();
-                }
-
-                Discard discardfound  = userPointsBLL.Find(id);
-                if (userPointsFound == null)
-                {
-                    return NotFound();
-                }
-                try
-                {
-                    userPointsBLL.Update(userPointsFound);
-                }
-                catch (Exception)
-                {
-                    return BadRequest();
-                }
-                return new NoContentResult();
+                return BadRequest(ex);
             }
         }
+
+        // POST: api/Users
+
+
+        [HttpPost]
+        public IActionResult Create([FromBody] Discard discard)//indica que o usuário vem pelo body da requisição
+        {
+            try
+            {
+                if (discard != null)
+                {
+                    return BadRequest();
+                }
+                discardBLL.Add(discards);
+                return Accepted();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("{alldiscards}")]
+        public IActionResult GetAllDataPoints(User user)
+        {
+            try
+            {
+                IEnumerable<Discard> alldiscards = discardBLL.getAllDiscards(user);
+                return new OkObjectResult(alldiscards);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro no acesso ao banco de dados: " + ex);
+            }
+        }
+
+        // PUT: api/Users/5
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody]  Discard discard)
+        {
+            if (discard == null || discard.Id != id)
+            {
+                return BadRequest();
+            }
+
+            Discard discardFound = discardBLL.Find(id);
+            if (discardFound == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                discardBLL.Update(discardFound);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            return new NoContentResult();
+        }
+    }
 }
