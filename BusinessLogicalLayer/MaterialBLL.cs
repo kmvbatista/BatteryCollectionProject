@@ -1,22 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataAccessLayer;
 using DataTypeObject;
 
 namespace BusinessLogicalLayer
 {
     public class MaterialBLL : IMATERIALCRUD
     {
-        public void Add(User user)
+        List<ErrorField> errors = new List<ErrorField>();
+        private readonly BatteryCollectorDbContext materialsDbContext;
+        public MaterialBLL(BatteryCollectorDbContext _materialsDbContext)
+        {
+            materialsDbContext = _materialsDbContext;
+        }
+        public MaterialBLL()
+        {
+
+        }
+        public void Add(Material material)
         {
             throw new NotImplementedException();
         }
 
-        public User Find(int Id)
+        public Material Find(int Id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return materialsDbContext.Materials.Find(Id);
+            }
+            catch
+            {
+                throw new Exception();
+            }
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Material> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -26,7 +44,7 @@ namespace BusinessLogicalLayer
             throw new NotImplementedException();
         }
 
-        public void Update(User user)
+        public void Update(Material material)
         {
             throw new NotImplementedException();
         }

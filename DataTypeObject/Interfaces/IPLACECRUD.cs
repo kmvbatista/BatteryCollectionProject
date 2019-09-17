@@ -6,14 +6,14 @@ namespace DataTypeObject
 {
     public interface IPLACECRUD
     {
-        void Add(User user);
+        void Add(Place place);
 
-        IEnumerable<User> GetAll();
+        IEnumerable<Place> GetAll();
 
-        User Find(int Id);
+        Place Find(int Id);
 
         void Remove(int Id);
 
-        void Update(User user);
+        void Update(Place place);
     }
 }

@@ -6,14 +6,14 @@ namespace DataTypeObject
 {
     public interface IMATERIALCRUD
     {
-        void Add(User user);
+        void Add(Material material);
 
-        IEnumerable<User> GetAll();
+        IEnumerable<Material> GetAll();
 
-        User Find(int Id);
+        Material Find(int Id);
 
         void Remove(int Id);
 
-        void Update(User user);
+        void Update(Material material);
     }
 }

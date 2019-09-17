@@ -18,14 +18,25 @@ namespace BusinessLogicalLayer
         public void Add(Discard discard)
         {
             //adicionar outros métodos de validação e implementá-los
-            discard.Date = DateTime.Now.AddMonths(1);
-            discardsDbContext.Add(discard);
-            discardsDbContext.SaveChanges();
+            try
+            {
+                validateDiscard(discard);
+                Discard mappedDiscard = GetMappedDiscard(discard);
+                discardsDbContext.Add(mappedDiscard);
+                discardsDbContext.SaveChanges();
+            }
+            catch
+            {
+                throw new Exception();
+            }
+            
         }
-        public Discard Find(int Id)
+
+        private void validateDiscard(Discard discard)
         {
-            return discardsDbContext.Discards.Find(Id);
+            throw new NotImplementedException();
         }
+
         public void Update(Discard userPoints)
         {
             discardsDbContext.Update(userPoints);
@@ -45,7 +56,7 @@ namespace BusinessLogicalLayer
             return discardsDbContext.Discards.ToList().Count;
         }
 
-        IEnumerable<Discard> IDISCARDCRUD.GetAllDataDiscards(User user)
+        public IEnumerable<Discard> GetAllDataDiscards(User user)
         {
             try
             {
@@ -57,9 +68,58 @@ namespace BusinessLogicalLayer
             }
         }
 
-        Discard IDISCARDCRUD.Find(int Id)
+        public Discard Find(int Id)
         {
             return discardsDbContext.Discards.Find(Id);
+        }
+
+        public Discard GetMappedDiscard(Discard discard)
+        {
+            User user = GetUser(discard.UserId);
+            Place place = GetPlace(discard.PlaceId);
+            Material material = GetMaterial(discard.MaterialId);
+            DateTime date = DateTime.Now;
+            return new Discard(material, discard.MaterialId, user,
+                discard.UserId, place, discard.PlaceId, discard.Quantity, date);
+        }
+
+        private Material GetMaterial(int materialId)
+        {
+            try
+            {
+                MaterialBLL materialBLL = new MaterialBLL();
+                return materialBLL.Find(materialId);
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+
+        private Place GetPlace(int placeId)
+        {
+            try
+            {
+                PlaceBLL placeBLL = new PlaceBLL();
+                return placeBLL.Find(placeId);
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+
+        private User GetUser(int userId)
+        {
+            try
+            {
+                UserBLL userBLL = new UserBLL();
+                return userBLL.Find(userId);
+            }
+            catch
+            {
+                throw new Exception();
+            }
         }
     }
 }

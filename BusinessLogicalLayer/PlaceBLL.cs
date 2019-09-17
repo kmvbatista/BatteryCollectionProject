@@ -7,17 +7,21 @@ namespace BusinessLogicalLayer
 {
     public class PlaceBLL : IPLACECRUD
     {
-        public void Add(User user)
+        public PlaceBLL()
+        {
+
+        }
+        public void Add(Place place)
         {
             throw new NotImplementedException();
         }
 
-        public User Find(int Id)
+        public Place Find(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Place> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -27,7 +31,7 @@ namespace BusinessLogicalLayer
             throw new NotImplementedException();
         }
 
-        public void Update(User user)
+        public void Update(Place place)
         {
             throw new NotImplementedException();
         }

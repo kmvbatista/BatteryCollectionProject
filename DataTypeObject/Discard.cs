@@ -11,15 +11,26 @@ namespace DataTypeObject
         public int MaterialId { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
-        public int Points { get; set; }
         public Place Place { get; set; }
-        public int IdPlace { get; set; }
+        public int PlaceId { get; set; }
         public int Quantity { get; set; }
         public DateTime Date { get; set; }
 
         public Discard()
         {
+            
 
+        }
+        public Discard(Material material, int materialId, User user,
+            int userId, Place place, int placeId, int quantity, DateTime date)
+        {
+            this.Material = material;
+            this.MaterialId = materialId;
+            this.Place = place;
+            this.PlaceId = PlaceId;
+            this.Quantity = quantity;
+            this.User = user;
+            this.UserId = userId;
         }
     }
 }
