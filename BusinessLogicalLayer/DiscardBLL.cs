@@ -20,7 +20,7 @@ namespace BusinessLogicalLayer
             //adicionar outros métodos de validação e implementá-los
             try
             {
-                validateDiscard(discard);
+                
                 Discard mappedDiscard = GetMappedDiscard(discard);
                 discardsDbContext.Add(mappedDiscard);
                 discardsDbContext.SaveChanges();
