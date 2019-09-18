@@ -7,13 +7,14 @@ namespace BusinessLogicalLayer
 {
     public class PlaceBLL : IPLACECRUD
     {
-        public PlaceBLL()
+        private readonly BatteryCollectorDbContext materialsDbContext;
+        public PlaceBLL(BatteryCollectorDbContext _materialsDbContext)
         {
-
+            materialsDbContext = _materialsDbContext;
         }
         public void Add(Place place)
         {
-            throw new NotImplementedException();
+            materialsDbContext.Places.Add(place);
         }
 
         public Place Find(int Id)
