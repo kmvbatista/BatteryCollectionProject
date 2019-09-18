@@ -19,7 +19,8 @@ namespace BusinessLogicalLayer
         }
         public void Add(Material material)
         {
-            throw new NotImplementedException();
+            materialsDbContext.Materials.Add(material);
+            SaveChanges();
         }
 
         public Material Find(int Id)
