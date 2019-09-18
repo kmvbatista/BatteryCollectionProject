@@ -12,19 +12,19 @@ namespace MVCPresentationLayer.Controllers
     [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
-    public class MaterialsController : Controller
+    public class PlacesController : Controller
     {
-        private readonly IMATERIALCRUD materialBLL;
-        public MaterialsController(IMATERIALCRUD materialBLL)
+        private readonly IPLACECRUD placeBLL;
+        public PlacesController(IPLACECRUD placeBLL)
         {
-            this.materialBLL = materialBLL;
+            this.placeBLL = placeBLL;
         }
         [HttpPost]
-        public IActionResult Add([FromBody] Material material)
+        public IActionResult Add([FromBody] Place place)
         {
             try
             {
-                materialBLL.Add(material);
+                 placeBLL.Add(place);
                 return Accepted();
             }
             catch
@@ -37,7 +37,7 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                materialBLL.Remove(Id);
+                placeBLL.Remove(Id);
                 return Accepted();
 
             }
@@ -51,7 +51,7 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                return new OkObjectResult(materialBLL.GetAll());
+                return new OkObjectResult(placeBLL.GetAll());
             }
             catch
             {
@@ -59,11 +59,11 @@ namespace MVCPresentationLayer.Controllers
             }
         }
         [HttpPut]
-        public IActionResult Update([FromBody] Material material)
+        public IActionResult Update([FromBody] Place place)
         {
             try
             {
-                materialBLL.Update(material);
+                placeBLL.Update(place);
                 return Accepted();
             }
             catch
