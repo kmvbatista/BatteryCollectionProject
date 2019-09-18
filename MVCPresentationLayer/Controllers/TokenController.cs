@@ -34,19 +34,19 @@ namespace MVCPresentationLayer.Controllers
             //User userFound = new User { Id = 1, CelphoneNumber = "47996207702", CEP = "89030300", Email = "kennedy@gmail.com" };
             try
             {
-                User userFound = _userBLL.Authenticate(request.Email, request.Password);
-                var user = userFound;
-                if (userFound != null)
-                {
+                //User userFound = _userBLL.Authenticate(request.Email, request.Password);
+                //var user = userFound;
+                //if (userFound != null)
+                //{
                     var resultado = new
                     {
-                        token = getToken(request),
-                        user = userFound
+                        token = getToken(request)
+                        //user = userFound
                     };
                     return Json(resultado); 
 
-                }
-                return NotFound();
+                //}
+                //return NotFound();
             }
             catch(Exception ex)
             {

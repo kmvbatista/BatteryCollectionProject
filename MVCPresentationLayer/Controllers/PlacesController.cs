@@ -24,6 +24,7 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
+                VerifyPlace(place);
                  placeBLL.Add(place);
                 return Accepted();
             }
@@ -32,6 +33,15 @@ namespace MVCPresentationLayer.Controllers
                 return BadRequest();
             }
         }
+
+        private void VerifyPlace(Place place)
+        {
+            if(place.Name==null)
+            {
+                throw new Exception();
+            }
+        }
+
         [HttpDelete]
         public IActionResult Remove(int Id)
         {

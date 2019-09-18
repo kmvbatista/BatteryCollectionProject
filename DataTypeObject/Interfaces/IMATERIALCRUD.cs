@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+
 
 namespace DataTypeObject
 {
     public interface IMATERIALCRUD
     {
-        void Add(Material material);
+        Task AddAsync(Material material);
 
-        IEnumerable<Material> GetAll();
+        Task<IEnumerable<Material>> GetAll();
 
-        Material Find(int Id);
+        Task<Material> Find(int Id);
 
         void Remove(int Id);
 

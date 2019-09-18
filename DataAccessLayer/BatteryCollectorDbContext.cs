@@ -17,5 +17,7 @@ namespace DataAccessLayer
         public DbSet<Material> Materials { get; set; }
         public DbSet<Discard> Discards { get; set; }
         public DbSet<UserPoints> UserPoints { get; set; }
+        public DbSet<Place> Places { get; set; }
+
     }
 }

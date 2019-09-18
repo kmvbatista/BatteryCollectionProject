@@ -3,6 +3,7 @@ using DataAccessLayer;
 using DataTypeObject;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace BusinessLogicalLayer
 {
@@ -15,13 +16,13 @@ namespace BusinessLogicalLayer
             discardsDbContext = _discardsDbContext;
         }
 
-        public void Add(Discard discard)
+        public async Task Add(Discard discard)
         {
             //adicionar outros métodos de validação e implementá-los
             try
             {
                 validateDiscard(discard);
-                Discard mappedDiscard = GetMappedDiscard(discard);
+                Discard mappedDiscard = await GetMappedDiscard(discard);
                 discardsDbContext.Add(mappedDiscard);
                 discardsDbContext.SaveChanges();
             }
@@ -73,22 +74,22 @@ namespace BusinessLogicalLayer
             return discardsDbContext.Discards.Find(Id);
         }
 
-        public Discard GetMappedDiscard(Discard discard)
+        public async Task<Discard> GetMappedDiscard(Discard discard)
         {
             User user = GetUser(discard.UserId);
-            Place place = GetPlace(discard.PlaceId);
-            Material material = GetMaterial(discard.MaterialId);
+            Place place = await GetPlace(discard.PlaceId);
+            Material material = await GetMaterial(discard.MaterialId);
             DateTime date = DateTime.Now;
             return new Discard(material, discard.MaterialId, user,
                 discard.UserId, place, discard.PlaceId, discard.Quantity, date);
         }
 
-        private Material GetMaterial(int materialId)
+        private async Task<Material> GetMaterial(int materialId)
         {
             try
             {
                 MaterialBLL materialBLL = new MaterialBLL();
-                return materialBLL.Find(materialId);
+                return await materialBLL.Find(materialId);
             }
             catch
             {
@@ -96,12 +97,12 @@ namespace BusinessLogicalLayer
             }
         }
 
-        private Place GetPlace(int placeId)
+        private async Task<Place> GetPlace(int placeId)
         {
             try
             {
                 PlaceBLL placeBLL = new PlaceBLL();
-                return placeBLL.Find(placeId);
+                return await placeBLL.Find(placeId);
             }
             catch
             {

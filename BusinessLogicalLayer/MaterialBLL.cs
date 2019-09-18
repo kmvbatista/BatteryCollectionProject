@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using DataAccessLayer;
 using DataTypeObject;
+using System.Threading.Tasks;
+using System.Linq;
+
 
 namespace BusinessLogicalLayer
 {
@@ -17,16 +20,24 @@ namespace BusinessLogicalLayer
         {
 
         }
-        public void Add(Material material)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Material Find(int Id)
+        public async Task AddAsync(Material material)
         {
             try
             {
-                return materialsDbContext.Materials.Find(Id);
+                await materialsDbContext.Materials.AddAsync(material);
+                await materialsDbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        public async Task<Material> Find(int Id)
+        {
+            try
+            {
+                return await materialsDbContext.Materials.FindAsync(Id);
             }
             catch
             {
@@ -34,9 +45,20 @@ namespace BusinessLogicalLayer
             }
         }
 
-        public IEnumerable<Material> GetAll()
+        public async Task<IEnumerable<Material>> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await GetListAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+        private Task<List<Material>> GetListAsync()
+        {
+            return Task.Run(() => materialsDbContext.Materials.ToList());
         }
 
         public void Remove(int Id)

@@ -24,7 +24,7 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                materialBLL.Add(material);
+                materialBLL.AddAsync(material);
                 return Accepted();
             }
             catch

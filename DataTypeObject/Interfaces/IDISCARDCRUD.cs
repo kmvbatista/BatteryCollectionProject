@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
@@ -11,8 +12,6 @@ namespace DataTypeObject
          double GetTotalUserDiscards(User user);
          IEnumerable<Discard> GetAllDataDiscards(User user);
         Discard Find(int Id);
-        void Add(Discard discard);
-
-
+        Task Add(Discard discard);
     }
 }
