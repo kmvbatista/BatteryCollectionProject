@@ -56,7 +56,7 @@ namespace WebPresentationLayer.Controllers
 
         // POST: api/Users
         
-
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Create([FromBody] User user)//indica que o usuário vem pelo body da requisição
         {
