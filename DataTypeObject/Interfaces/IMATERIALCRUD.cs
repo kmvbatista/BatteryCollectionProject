@@ -12,7 +12,7 @@ namespace DataTypeObject
 
         Task<IEnumerable<Material>> GetAll();
 
-        Task<Material> Find(int Id);
+       Material Find(int Id);
 
         void Remove(int Id);
 

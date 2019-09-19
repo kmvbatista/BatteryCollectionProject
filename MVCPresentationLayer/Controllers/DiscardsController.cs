@@ -45,14 +45,14 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                if (discard != null)
+                if (discard == null)
                 {
                     return BadRequest();
                 }
                 discardBLL.Add(discard);
                 return Accepted();
             }
-            catch
+            catch(Exception)
             {
                 return BadRequest();
             }

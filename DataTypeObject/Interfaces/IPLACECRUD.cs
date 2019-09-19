@@ -11,7 +11,7 @@ namespace DataTypeObject
 
         Task<IEnumerable<Place>> GetAll();
 
-        Task<Place> Find(int Id);
+        Place Find(int Id);
 
         void Remove(int Id);
 

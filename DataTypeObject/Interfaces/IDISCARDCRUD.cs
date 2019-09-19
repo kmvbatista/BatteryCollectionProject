@@ -12,6 +12,6 @@ namespace DataTypeObject
          double GetTotalUserDiscards(User user);
          IEnumerable<Discard> GetAllDataDiscards(User user);
         Discard Find(int Id);
-        Task Add(Discard discard);
+        void Add(Discard discard);
     }
 }

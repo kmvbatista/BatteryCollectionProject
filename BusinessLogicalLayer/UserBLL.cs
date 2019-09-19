@@ -16,10 +16,6 @@ namespace BusinessLogicalLayer
         {
             userDbContext = _userDbContext;
         }
-        public UserBLL()
-        {
-
-        }
 
         public void Add(User user)
         {

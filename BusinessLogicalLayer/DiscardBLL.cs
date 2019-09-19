@@ -16,17 +16,17 @@ namespace BusinessLogicalLayer
             discardsDbContext = _discardsDbContext;
         }
 
-        public async Task Add(Discard discard)
+        public void Add(Discard discard)
         {
             //adicionar outros métodos de validação e implementá-los
             try
             {
-                validateDiscard(discard);
-                Discard mappedDiscard = await GetMappedDiscard(discard);
+                //validateDiscard(discard);
+                Discard mappedDiscard = GetMappedDiscard(discard);
                 discardsDbContext.Add(mappedDiscard);
                 discardsDbContext.SaveChanges();
             }
-            catch
+            catch(Exception ex)
             {
                 throw new Exception();
             }
@@ -74,22 +74,22 @@ namespace BusinessLogicalLayer
             return discardsDbContext.Discards.Find(Id);
         }
 
-        public async Task<Discard> GetMappedDiscard(Discard discard)
+        public Discard GetMappedDiscard(Discard discard)
         {
+            Place place =  GetPlace(discard.PlaceId);
+            Material material =  GetMaterial(discard.MaterialId);
             User user = GetUser(discard.UserId);
-            Place place = await GetPlace(discard.PlaceId);
-            Material material = await GetMaterial(discard.MaterialId);
             DateTime date = DateTime.Now;
             return new Discard(material, discard.MaterialId, user,
                 discard.UserId, place, discard.PlaceId, discard.Quantity, date);
         }
 
-        private async Task<Material> GetMaterial(int materialId)
+        private  Material GetMaterial(int materialId)
         {
             try
             {
-                MaterialBLL materialBLL = new MaterialBLL();
-                return await materialBLL.Find(materialId);
+                MaterialBLL materialBLL = new MaterialBLL(discardsDbContext);
+                return  materialBLL.Find(materialId);
             }
             catch
             {
@@ -97,12 +97,12 @@ namespace BusinessLogicalLayer
             }
         }
 
-        private async Task<Place> GetPlace(int placeId)
+        private Place GetPlace(int placeId)
         {
             try
             {
-                PlaceBLL placeBLL = new PlaceBLL();
-                return await placeBLL.Find(placeId);
+                PlaceBLL placeBLL = new PlaceBLL(discardsDbContext);
+                return placeBLL.Find(placeId);
             }
             catch
             {
@@ -114,12 +114,12 @@ namespace BusinessLogicalLayer
         {
             try
             {
-                UserBLL userBLL = new UserBLL();
+                UserBLL userBLL = new UserBLL(this.discardsDbContext);
                 return userBLL.Find(userId);
             }
-            catch
+            catch(Exception ex)
             {
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
         }
     }

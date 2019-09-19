@@ -4,7 +4,7 @@ using DataAccessLayer;
 using DataTypeObject;
 using System.Threading.Tasks;
 using System.Linq;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogicalLayer
 {
@@ -33,11 +33,11 @@ namespace BusinessLogicalLayer
             }
         }
 
-        public async Task<Material> Find(int Id)
+        public  Material Find(int Id)
         {
             try
             {
-                return await materialsDbContext.Materials.FindAsync(Id);
+                return  materialsDbContext.Materials.Find(Id);
             }
             catch
             {
@@ -49,17 +49,14 @@ namespace BusinessLogicalLayer
         {
             try
             {
-                return await GetListAsync();
+                return await materialsDbContext.Materials.ToListAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception();
+                throw new Exception(""+ex);
             }
         }
-        private Task<List<Material>> GetListAsync()
-        {
-            return Task.Run(() => materialsDbContext.Materials.ToList());
-        }
+       
 
         public void Remove(int Id)
         {
