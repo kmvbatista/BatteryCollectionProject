@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DataTypeObject;
+using System.Transactions;
 
 namespace MVCPresentationLayer.Controllers
 {
-    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class DiscardsController : Controller
@@ -49,8 +49,13 @@ namespace MVCPresentationLayer.Controllers
                 {
                     return BadRequest();
                 }
-                discardBLL.Add(discard);
-                return Accepted();
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    discardBLL.Add(discard);
+                    scope.Complete();
+                    return Accepted();
+
+                }
             }
             catch(Exception)
             {

@@ -32,6 +32,11 @@ namespace BusinessLogicalLayer
             return userDbContext.Users.Find(_Id);
         }
 
+        public void UpdatePoints ( User user, int pointsToAdd) {
+            user.TotalPoints += pointsToAdd;
+            Update(user);
+        }
+
         public IEnumerable<User> GetAll()
         {
             //return userDbContext.Users.;

@@ -12,9 +12,13 @@ namespace DataTypeObject
         public string Password { get; set; }
         public int TotalPoints { get; set; }
 
-        public User()
+        public User(int id, string name, string email, string password, int totalPoints )
         {
-
+            this.Email= email;
+            this.Id = id;
+            this.TotalPoints = totalPoints;
+            this.Password = password;
+            this.Name = name;
         }
     }
 }

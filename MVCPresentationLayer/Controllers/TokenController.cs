@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using DataTypeObject;
 using System.Security.Claims;
@@ -8,8 +7,6 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System;
 using Microsoft.AspNetCore.Authorization;
-using BusinessLogicalLayer;
-using Microsoft.AspNetCore.Cors;
 
 namespace MVCPresentationLayer.Controllers
 {
@@ -30,23 +27,20 @@ namespace MVCPresentationLayer.Controllers
         [HttpPost]
         public IActionResult RequestToken([FromBody] User request)
         {
-            //User userFound = _userBLL.Authenticate(request.Email, request.Password);
-            //User userFound = new User { Id = 1, CelphoneNumber = "47996207702", CEP = "89030300", Email = "kennedy@gmail.com" };
             try
             {
-                //User userFound = _userBLL.Authenticate(request.Email, request.Password);
-                //var user = userFound;
-                //if (userFound != null)
-                //{
+                // //User userFound = _userBLL.Authenticate(request.Email, request.Password);
+                var user = new User(3, "kennedy", "kennedymessias@gmail.com", "12345678", 0);
+                // if (userFound != null)
+                // kennedymessias@gmail.com
                     var resultado = new
                     {
-                        token = getToken(request)
-                        //user = userFound
+                        token = getToken(request),
+                        user 
                     };
                     return Json(resultado); 
-
-                //}
-                //return NotFound();
+                // }
+                // return NotFound();e
             }
             catch(Exception ex)
             {

@@ -21,21 +21,26 @@ namespace BusinessLogicalLayer
             //adicionar outros métodos de validação e implementá-los
             try
             {
-                //validateDiscard(discard);
                 Discard mappedDiscard = GetMappedDiscard(discard);
                 discardsDbContext.Add(mappedDiscard);
+                UserBLL userBLL = new UserBLL(discardsDbContext);
+                userBLL.UpdatePoints(mappedDiscard.User, discard.Quantity);
                 discardsDbContext.SaveChanges();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 throw new Exception();
             }
-            
         }
 
         private void validateDiscard(Discard discard)
         {
-            throw new NotImplementedException();
+            Discard discardFound = discardsDbContext.Discards.First(x => x.Date.DayOfYear== discard.Date.DayOfYear &&
+            x.Date.Year == discard.Date.Year &&
+            x.UserId == discard.UserId);
+            if(discardFound != null) {
+                throw new Exception();//personalizada
+            }
         }
 
         public void Update(Discard userPoints)
@@ -54,14 +59,14 @@ namespace BusinessLogicalLayer
         }
         public double GetTotalUserDiscards(User user)
         {
-            return discardsDbContext.Discards.ToList().Count;
+            return discardsDbContext.Discards.Where(x => x.UserId==user.Id).ToList().Count;
         }
 
         public IEnumerable<Discard> GetAllDataDiscards(User user)
         {
             try
             {
-                return discardsDbContext.Discards.ToList();
+                return discardsDbContext.Discards.Where(x => x.UserId==user.Id).ToList();
             }
             catch
             {
@@ -101,6 +106,9 @@ namespace BusinessLogicalLayer
         {
             try
             {
+                if(placeId<1) {
+                    throw new Exception();
+                }
                 PlaceBLL placeBLL = new PlaceBLL(discardsDbContext);
                 return placeBLL.Find(placeId);
             }
