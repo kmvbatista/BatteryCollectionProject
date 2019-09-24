@@ -53,13 +53,13 @@ namespace BusinessLogicalLayer
 
         public User Authenticate(string username, string password)
         {
-                validateEmail(username);
-                validatePasswordString(password);
-                if (errors.Count > 0)
-                {
-                    return null;
-                }
-                return userDbContext.Users.FirstOrDefault(u => u.Email == username && u.Password == password);
+            validateEmail(username);
+            validatePasswordString(password);
+            if (errors.Count > 0)
+            {
+                return null;
+            }
+            return userDbContext.Users.FirstOrDefault(u => u.Email == username && u.Password == password);
         }
 
         private void validatePasswordString(string password)
@@ -75,7 +75,6 @@ namespace BusinessLogicalLayer
 
             }
         }
-
 
         private void validateEmail(string Email)
         {

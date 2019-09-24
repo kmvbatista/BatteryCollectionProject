@@ -31,7 +31,7 @@ namespace MVCPresentationLayer.Controllers
         public IActionResult RequestToken([FromBody] User request)
         {
             //User userFound = _userBLL.Authenticate(request.Email, request.Password);
-            //User userFound = new User { Id = 1, CelphoneNumber = "47996207702", CEP = "89030300", Email = "kennedy@gmail.com" };
+            User userFound = new User { Id = 1, Name = "Kennedy", Email = "kennedy@gmail.com" };
             try
             {
                 //User userFound = _userBLL.Authenticate(request.Email, request.Password);
@@ -40,8 +40,8 @@ namespace MVCPresentationLayer.Controllers
                 //{
                     var resultado = new
                     {
-                        token = getToken(request)
-                        //user = userFound
+                        token = getToken(request),
+                        user = userFound
                     };
                     return Json(resultado); 
 
