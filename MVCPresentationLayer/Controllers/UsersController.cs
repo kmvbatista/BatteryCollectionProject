@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebPresentationLayer.Controllers
 {
-    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -69,30 +68,31 @@ namespace WebPresentationLayer.Controllers
             return Accepted();
 
         }
-
+        [AllowAnonymous]
         // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] User user)
+        [HttpPut]
+        public IActionResult UpdateUser([FromBody] User user)
         {
-            if (user == null || user.Id != id)
+            if (user == null)
             {
                 return BadRequest();
             }
 
-            User userFound = userBLL.Find(id);
+            User userFound = userBLL.Find(user.Id);
             if (userFound == null)
             {
                 return NotFound();
             }
             try
             {
-                userBLL.Update(user);
+                User updatedUser= userBLL.Update(user);
+                return new OkObjectResult(user);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
+
             }
-            return new NoContentResult();
         }
 
         [HttpDelete("{id}")]

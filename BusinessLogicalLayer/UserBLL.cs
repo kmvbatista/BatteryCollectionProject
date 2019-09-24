@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System;
 using BusinessLogicalLayer.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BusinessLogicalLayer
 {
@@ -15,6 +17,7 @@ namespace BusinessLogicalLayer
         public UserBLL(BatteryCollectorDbContext _userDbContext)
         {
             userDbContext = _userDbContext;
+            userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public void Add(User user)
@@ -50,10 +53,12 @@ namespace BusinessLogicalLayer
             userDbContext.SaveChanges();
         }
 
-        public void Update(User user)
+        public User Update(User user)
         {
-            userDbContext.Update(user);
+            EntityEntry<User> response = userDbContext.Update(user);
             userDbContext.SaveChanges();
+            return user;
+            throw new Exception();
         }
 
         public User Authenticate(string username, string password)

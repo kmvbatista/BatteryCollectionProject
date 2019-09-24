@@ -1,6 +1,7 @@
 ﻿using BusinessLogicalLayer;
 using DataAccessLayer;
 using DataTypeObject;
+using DataTypeObject.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +39,7 @@ namespace MVCPresentationLayer
             services.AddTransient<IMATERIALCRUD, MaterialBLL>();
             services.AddTransient<IDISCARDCRUD, DiscardBLL>();
             services.AddTransient<IPLACECRUD, PlaceBLL>();
-
+            services.AddTransient<IFEATURE, FeatureHintBLL>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
