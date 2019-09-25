@@ -40,6 +40,8 @@ namespace MVCPresentationLayer
             services.AddTransient<IDISCARDCRUD, DiscardBLL>();
             services.AddTransient<IPLACECRUD, PlaceBLL>();
             services.AddTransient<IFEATURE, FeatureHintBLL>();
+             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+         services.AddTransient<IEmailSender, AuthMessageSender>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
@@ -52,7 +54,7 @@ namespace MVCPresentationLayer
                         ValidIssuer = "kennedyBatteryProject",
                         ValidAudience = "BatteryCollectorUsers",
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
+                        Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
                     };  
                 
                 });
