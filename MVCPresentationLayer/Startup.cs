@@ -41,7 +41,6 @@ namespace MVCPresentationLayer
             services.AddTransient<IPLACECRUD, PlaceBLL>();
             services.AddTransient<IFEATURE, FeatureHintBLL>();
              services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-         services.AddTransient<IEmailSender, AuthMessageSender>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
