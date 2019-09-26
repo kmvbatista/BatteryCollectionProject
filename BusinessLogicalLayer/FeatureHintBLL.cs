@@ -19,7 +19,7 @@ namespace BusinessLogicalLayer
         }
         public EmailSettings _emailSettings { get; }
         public void SendEmail(FeatureHint feature) {
-            MailMessage mail = GetMailMessage();
+            MailMessage mail = GetMailMessage(feature);
             mail.Body = GetMailBody(feature);
             mail.IsBodyHtml = true;
             mail.Priority = MailPriority.High;
@@ -33,16 +33,25 @@ namespace BusinessLogicalLayer
 
         private string GetMailBody(FeatureHint feature)
         {
-            return $@"Usuario {feature.Sender.Name}, portador do email {feature.Sender.Email}
-                solicitou cadastro de {feature.Local}, com a seguinte descrição: {feature.Description} ";
+            if(feature.Material != null) {
+                return $@"Usuario {feature.Sender.Name}, portador do email {feature.Sender.Email}
+                solicitou cadastro do material {feature.Material}, com a seguinte descrição: {feature.Description} ";
+            }
+            else 
+            {
+                return $@"Usuario {feature.Sender.Name}, portador do email {feature.Sender.Email}
+                solicitou cadastro do local {feature.Local}, endereço: {feature.Adress}
+                 e o seguinte material relacionado: {feature.Material}";
+            }
+            
         }
 
-        private MailMessage GetMailMessage() 
+        private MailMessage GetMailMessage(FeatureHint feature) 
         {      
             string toEmail =  _emailSettings.ToEmail; 
             MailMessage mail = new MailMessage()
             {
-                From = new MailAddress(_emailSettings.UsernameEmail, "Jose Carlos Macoratti")
+                From = new MailAddress(_emailSettings.UsernameEmail, "Usuário" + feature.Sender.Name)
             };
             mail.To.Add(new MailAddress(toEmail));
             mail.CC.Add(new MailAddress(_emailSettings.CcEmail));

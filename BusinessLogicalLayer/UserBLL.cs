@@ -24,6 +24,7 @@ namespace BusinessLogicalLayer
         {
 
             validateEmail(user.Email);
+            user.Email = user.Email.ToLower();
             //adicionar outros métodos de validação e implementá-los
 
             userDbContext.Add(user);
