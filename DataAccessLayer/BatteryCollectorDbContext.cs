@@ -13,7 +13,7 @@ public class BatteryCollectorDbContext : DbContext
     {
     modelBuilder.Entity<Discard>()
                 .Property(sample => sample.Date)
-                .HasColumnType("datetime");
+                .HasColumnType("date");
 
 
     base.OnModelCreating(modelBuilder);
