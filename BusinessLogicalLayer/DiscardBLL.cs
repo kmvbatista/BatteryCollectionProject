@@ -21,6 +21,7 @@ namespace BusinessLogicalLayer
             //adicionar outros métodos de validação e implementá-los
             try
             {
+                validateDiscard(discard.UserId);
                 Discard mappedDiscard = GetMappedDiscard(discard);
                 discardsDbContext.Add(mappedDiscard);
                 UserBLL userBLL = new UserBLL(discardsDbContext);
@@ -33,11 +34,11 @@ namespace BusinessLogicalLayer
             }
         }
 
-        private void validateDiscard(Discard discard)
+        private void validateDiscard(int UserId)
         {
-            Discard discardFound = discardsDbContext.Discards.First(x => x.Date.DayOfYear== discard.Date.DayOfYear &&
-            x.Date.Year == discard.Date.Year &&
-            x.UserId == discard.UserId);
+            Discard discardFound = discardsDbContext.Discards.First(x => 
+            x.UserId == UserId && x.Date.DayOfYear== DateTime.Now.DayOfYear &&
+            x.Date.Year == DateTime.Now.Year);
             if(discardFound != null) {
                 throw new Exception();//personalizada
             }
