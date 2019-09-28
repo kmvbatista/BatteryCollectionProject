@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class second : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,16 +22,28 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Place",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Latitude = table.Column<int>(nullable: false),
+                    Longitude = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Place", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    CPF = table.Column<string>(nullable: true),
-                    Adress = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
-                    CelphoneNumber = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     TotalPoints = table.Column<int>(nullable: false)
                 },
@@ -48,7 +60,9 @@ namespace DataAccessLayer.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     MaterialId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
-                    Points = table.Column<int>(nullable: false)
+                    PlaceId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,6 +71,12 @@ namespace DataAccessLayer.Migrations
                         name: "FK_Discards_Materials_MaterialId",
                         column: x => x.MaterialId,
                         principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Discards_Place_PlaceId",
+                        column: x => x.PlaceId,
+                        principalTable: "Place",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -73,6 +93,11 @@ namespace DataAccessLayer.Migrations
                 column: "MaterialId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Discards_PlaceId",
+                table: "Discards",
+                column: "PlaceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Discards_UserId",
                 table: "Discards",
                 column: "UserId");
@@ -85,6 +110,9 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Materials");
+
+            migrationBuilder.DropTable(
+                name: "Place");
 
             migrationBuilder.DropTable(
                 name: "Users");

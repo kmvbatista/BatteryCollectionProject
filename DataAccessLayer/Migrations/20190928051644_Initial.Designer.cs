@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(BatteryCollectorDbContext))]
-    [Migration("20190928031917_latitude")]
-    partial class latitude
+    [Migration("20190928051644_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,9 +68,9 @@ namespace DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Latitude");
+                    b.Property<int>("Latitude");
 
-                    b.Property<string>("Longitude");
+                    b.Property<int>("Longitude");
 
                     b.Property<string>("Name");
 

@@ -66,9 +66,9 @@ namespace DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Latitude");
+                    b.Property<int>("Latitude");
 
-                    b.Property<string>("Longitude");
+                    b.Property<int>("Longitude");
 
                     b.Property<string>("Name");
 
