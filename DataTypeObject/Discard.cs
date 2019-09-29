@@ -17,7 +17,6 @@ namespace DataTypeObject
         public DateTime Date { get; set; }
         public string MaterialName { get; set; }
         public string PlaceName { get; set; }
-        public string UserName { get; set; }
 
         public Discard()
         {
@@ -38,7 +37,6 @@ namespace DataTypeObject
             this.Date = date;
             this.MaterialName = materialName;
             this.PlaceName = placeName;
-            this.UserName = userName;
         }
     }
 }

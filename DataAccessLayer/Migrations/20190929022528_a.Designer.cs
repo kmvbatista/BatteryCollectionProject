@@ -4,14 +4,16 @@ using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(BatteryCollectorDbContext))]
-    partial class BatteryCollectorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190929022528_a")]
+    partial class a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,6 +41,8 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Quantity");
 
                     b.Property<int>("UserId");
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
