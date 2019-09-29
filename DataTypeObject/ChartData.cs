@@ -9,5 +9,6 @@ namespace DataTypeObject
         public string Date { get; set; }
         public string Place { get; set; }
         public string Material { get; set; }
+        public int Quantity { get; set; }
     }
 }
