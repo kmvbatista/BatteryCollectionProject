@@ -13,11 +13,12 @@ public class BatteryCollectorDbContext : DbContext
     {
     modelBuilder.Entity<Discard>()
                 .Property(sample => sample.Date)
-                .HasColumnType("date");
-
+                .HasColumnType("datetime");
+    
 
     base.OnModelCreating(modelBuilder);
     }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=turnitgreenerdb.cgzah6z6klsd.us-east-2.rds.amazonaws.com; Initial Catalog=turnitgreener;User ID=kmvbatista;Password=Ke159951h;Connect Timeout=360;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");

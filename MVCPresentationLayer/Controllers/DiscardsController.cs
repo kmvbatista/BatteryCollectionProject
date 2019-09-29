@@ -57,19 +57,33 @@ namespace MVCPresentationLayer.Controllers
 
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpGet("{alldiscards}")]
-        public IActionResult GetAllDataDiscards(User user)
+        [HttpPost("all")]
+        public IActionResult GetAllDataDiscards([FromBody]User user)
         {
             try
             {
-                IEnumerable<Discard> alldiscards = discardBLL.GetAllDataDiscards(user);
+                IEnumerable<ChartData> alldiscards = discardBLL.GetChartsData(user);
                 return new OkObjectResult(alldiscards);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro no acesso ao banco de dados: " + ex);
+            }
+        }
+
+        [HttpPost("general")]
+        public IActionResult GetGeneralData([FromBody]User user)
+        {
+            try
+            {
+                GeneralData generalData = discardBLL.GetGeneralData(user);
+                return new OkObjectResult(generalData);
             }
             catch (Exception ex)
             {

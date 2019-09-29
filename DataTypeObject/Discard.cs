@@ -15,6 +15,9 @@ namespace DataTypeObject
         public int PlaceId { get; set; }
         public int Quantity { get; set; }
         public DateTime Date { get; set; }
+        public string MaterialName { get; set; }
+        public string PlaceName { get; set; }
+        public string UserName { get; set; }
 
         public Discard()
         {
@@ -22,7 +25,8 @@ namespace DataTypeObject
 
         }
         public Discard(Material material, int materialId, User user,
-            int userId, Place place, int placeId, int quantity, DateTime date)
+            int userId, Place place, int placeId, int quantity, DateTime date,
+            string materialName, string placeName, string userName)
         {
             this.Material = material;
             this.MaterialId = materialId;
@@ -31,6 +35,10 @@ namespace DataTypeObject
             this.Quantity = quantity;
             this.User = user;
             this.UserId = userId;
+            this.Date = date;
+            this.MaterialName = materialName;
+            this.PlaceName = placeName;
+            this.UserName = userName;
         }
     }
 }
