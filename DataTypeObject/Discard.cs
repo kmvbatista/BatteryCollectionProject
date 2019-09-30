@@ -17,6 +17,7 @@ namespace DataTypeObject
         public DateTime Date { get; set; }
         public string MaterialName { get; set; }
         public string PlaceName { get; set; }
+        public int DayOfWeek { get; set; }
 
         public Discard()
         {

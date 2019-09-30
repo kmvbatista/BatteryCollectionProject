@@ -7,7 +7,7 @@ namespace DataTypeObject
         IEnumerable<Discard> GetMonthlyDiscards(User user);
         IEnumerable<Discard> GetYearDiscards(User user);
         double GetTotalUserDiscards(User user);
-        List<ChartData> GetChartsData(User user);
+        ChartData GetChartsData(User user);
         GeneralData GetGeneralData(User user);
         Discard Find(int Id);
         void Add(Discard discard);

@@ -63,21 +63,18 @@ namespace BusinessLogicalLayer
             return discardsDbContext.Discards.Where(x => x.UserId==user.Id).ToList().Count;
         }
 
-        public List<ChartData> GetChartsData(User user)
+        public ChartData GetChartsData(User user)
         {
             try
             {
-                List<Discard> allDiscards =  discardsDbContext.Discards.Where(x => x.UserId==user.Id).ToList();
-                List<ChartData> chartsData = new List<ChartData>();
-                foreach (Discard discard in allDiscards )
-                {
-                    chartsData.Add(new ChartData {
-                        Date = discard.Date.ToString(("dd-MM-yyyy")),
-                        Material = discard.MaterialName,
-                        Place = discard.PlaceName,
-                    });
-                }
-                return chartsData;
+                ChartData chartData = new ChartData(new int[12], new int[4]);
+                var yearList= discardsDbContext.Discards.Where(x => x.UserId == user.Id)
+                     .GroupBy(d => d.Date.Month).Select(x => new KeyValueDiscards(x.Key, x.Count())).ToList();
+                var weekList = discardsDbContext.Discards.Where(x => x.UserId == user.Id)
+                     .GroupBy(d => d.DayOfWeek).Select(x => new KeyValueDiscards(x.Key, x.Count())).ToList();
+                yearList.ForEach(x => chartData.YearPoints[x.Key-1] = x.Discards);
+                weekList.ForEach(x => chartData.WeekPoints[x.Key-1] = x.Discards);
+                return chartData;
             }
             catch
             {
@@ -92,7 +89,8 @@ namespace BusinessLogicalLayer
             var mostDiscarded = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.MaterialName)
                 .OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
             var totalPoints = discardsDbContext.Users.Find(user.Id).TotalPoints;
-            return new GeneralData { MostVisited = mostVisited, MostDiscarded = mostDiscarded, TotalPoints= totalPoints };
+            var mostDiscardedMonth = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.Date.Month).OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
+            return new GeneralData { MostVisited = mostVisited, MostDiscarded = mostDiscarded, TotalPoints= totalPoints, MostDiscardedMonth = mostDiscardedMonth };
         }
 
         public Discard Find(int Id)
@@ -153,5 +151,6 @@ namespace BusinessLogicalLayer
                 throw new Exception(ex.Message);
             }
         }
+
     }
 }

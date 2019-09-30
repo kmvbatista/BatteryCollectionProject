@@ -6,9 +6,13 @@ namespace DataTypeObject
 {
     public class ChartData
     {
-        public string Date { get; set; }
-        public string Place { get; set; }
-        public string Material { get; set; }
-        public int Quantity { get; set; }
+        public int[] YearPoints { get; set; }
+        public int[] WeekPoints { get; set; }
+
+        public ChartData(int[] yearPoints, int[] weekPoints)
+        {
+            YearPoints = yearPoints;
+            WeekPoints = weekPoints;
+        }
     }
 }

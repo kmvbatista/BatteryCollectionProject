@@ -56,6 +56,8 @@ namespace BusinessLogicalLayer
 
         public User Update(User user)
         {
+            int totalPoints = userDbContext.Users.Where(x => x.Id == user.Id).Select(x => x.TotalPoints).ToList()[0];
+            user.TotalPoints = totalPoints;
             EntityEntry<User> response = userDbContext.Update(user);
             userDbContext.SaveChanges();
             return user;

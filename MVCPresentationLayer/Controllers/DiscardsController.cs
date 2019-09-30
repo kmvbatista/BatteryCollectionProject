@@ -68,8 +68,10 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                IEnumerable<ChartData> alldiscards = discardBLL.GetChartsData(user);
-                return new OkObjectResult(alldiscards);
+                ChartData alldiscards = discardBLL.GetChartsData(user);
+                GeneralData generalData = discardBLL.GetGeneralData(user);
+                var result = new { alldiscards, generalData };
+                return Json(result);
             }
             catch (Exception ex)
             {
