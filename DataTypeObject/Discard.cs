@@ -26,7 +26,7 @@ namespace DataTypeObject
         }
         public Discard(Material material, int materialId, User user,
             int userId, Place place, int placeId, int quantity, DateTime date,
-            string materialName, string placeName, string userName)
+            string materialName, string placeName, string userName, int weekOfMonth)
         {
             this.Material = material;
             this.MaterialId = materialId;
@@ -38,6 +38,7 @@ namespace DataTypeObject
             this.Date = date;
             this.MaterialName = materialName;
             this.PlaceName = placeName;
+            this.DayOfWeek = weekOfMonth;
         }
     }
 }

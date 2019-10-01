@@ -7,6 +7,7 @@ using System;
 using BusinessLogicalLayer.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Newtonsoft.Json;
 
 namespace BusinessLogicalLayer
 {
@@ -29,6 +30,13 @@ namespace BusinessLogicalLayer
 
             userDbContext.Add(user);
             userDbContext.SaveChanges();
+        }
+
+        public List<RankingData> GetRankingData() {
+            string[] array = new string[5];
+            var ranking = userDbContext.Users.
+            OrderByDescending(x => x.TotalPoints).Select(x => new RankingData(x.Name, x.TotalPoints)).ToList();
+            return ranking;
         }
 
         public User Find(int _Id)

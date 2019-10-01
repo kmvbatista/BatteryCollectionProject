@@ -3,7 +3,7 @@ using DataAccessLayer;
 using DataTypeObject;
 using System.Linq;
 using System;
-using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BusinessLogicalLayer
 {
@@ -21,12 +21,16 @@ namespace BusinessLogicalLayer
             //adicionar outros métodos de validação e implementá-los
             try
             {
-                validateDiscard(discard);
-                Discard mappedDiscard = GetMappedDiscard(discard);
-                discardsDbContext.Add(mappedDiscard);
-                UserBLL userBLL = new UserBLL(discardsDbContext);
-                userBLL.UpdatePoints(mappedDiscard.User, discard.Quantity);
-                discardsDbContext.SaveChanges();
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    validateDiscard(discard);
+                    Discard mappedDiscard = GetMappedDiscard(discard);
+                    discardsDbContext.Add(mappedDiscard);
+                    UserBLL userBLL = new UserBLL(discardsDbContext);
+                    userBLL.UpdatePoints(mappedDiscard.User, discard.Quantity);
+                    discardsDbContext.SaveChanges();
+                    scope.Complete();
+                }
             }
             catch(Exception)
             {
@@ -104,53 +108,68 @@ namespace BusinessLogicalLayer
             Material material =  GetMaterial(discard.MaterialId);
             User user = GetUser(discard.UserId);
             DateTime date = DateTime.Now;
+            int weekOfMonth = getWeekOfMonth(date.Day);
             return new Discard(material, discard.MaterialId, user,
                 discard.UserId, place, discard.PlaceId, discard.Quantity,
-                DateTime.Now.AddDays(2), discard.Material.Description, discard.Place.Name,
-                discard.User.Name);
+                date, discard.Material.Description, discard.Place.Name,
+                discard.User.Name, weekOfMonth);
         }
 
-        private  Material GetMaterial(int materialId)
+    private int getWeekOfMonth(int day)
+    {
+        if(day <= 7) {
+        return 1;
+        }
+        else if(day <= 14) {
+        return 2;
+        }
+        else if(day <= 21) {
+        return 3;
+        }
+        return 4;
+    }
+
+    private  Material GetMaterial(int materialId)
+    {
+        try
         {
-            try
-            {
-                MaterialBLL materialBLL = new MaterialBLL(discardsDbContext);
-                return  materialBLL.Find(materialId);
-            }
-            catch
-            {
+            MaterialBLL materialBLL = new MaterialBLL(discardsDbContext);
+            return  materialBLL.Find(materialId);
+        }
+        catch
+        {
+            throw new Exception();
+        }
+    }
+
+    private Place GetPlace(int placeId)
+    {
+        try
+        {
+            if(placeId<1) {
                 throw new Exception();
             }
+            PlaceBLL placeBLL = new PlaceBLL(discardsDbContext);
+            return placeBLL.Find(placeId);
         }
-
-        private Place GetPlace(int placeId)
+        catch
         {
-            try
-            {
-                if(placeId<1) {
-                    throw new Exception();
-                }
-                PlaceBLL placeBLL = new PlaceBLL(discardsDbContext);
-                return placeBLL.Find(placeId);
-            }
-            catch
-            {
-                throw new Exception();
-            }
+            throw new Exception();
         }
+    }
 
-        private User GetUser(int userId)
+    private User GetUser(int userId)
+    {
+        try
         {
-            try
-            {
-                UserBLL userBLL = new UserBLL(this.discardsDbContext);
-                return userBLL.Find(userId);
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            UserBLL userBLL = new UserBLL(this.discardsDbContext);
+            return userBLL.Find(userId);
         }
+        catch(Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
     }
 }

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DataTypeObject;
-using System.Transactions;
 
 namespace MVCPresentationLayer.Controllers
 {
@@ -49,13 +45,8 @@ namespace MVCPresentationLayer.Controllers
                 {
                     return BadRequest();
                 }
-                using (TransactionScope scope = new TransactionScope())
-                {
-                    discardBLL.Add(discard);
-                    scope.Complete();
-                    return Accepted();
-
-                }
+                discardBLL.Add(discard);
+                return Accepted();
             }
             catch(Exception ex)
             {

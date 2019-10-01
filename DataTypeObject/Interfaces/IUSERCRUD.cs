@@ -17,5 +17,7 @@ namespace DataTypeObject
         User Update(User user);
 
         User Authenticate(string username, string password);
+
+        List<RankingData> GetRankingData();
     }
 }

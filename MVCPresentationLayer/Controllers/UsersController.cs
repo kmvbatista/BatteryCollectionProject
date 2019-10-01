@@ -24,19 +24,6 @@ namespace WebPresentationLayer.Controllers
             return userBLL.GetAll();
         }
 
-        /*
-        [HttpPost]
-        public IActionResult Login(string email, string password)
-        { 
-            User userFound= userBLL.Authenticate(email, password);
-            if(userFound != null)
-            {
-                return new ObjectResult(userFound);
-            }
-            return NotFound();
-        }
-        */
-
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
         public IActionResult GetById(int id)
@@ -66,6 +53,15 @@ namespace WebPresentationLayer.Controllers
             userBLL.Add(user);
             //return CreatedAtRoute("GetUser", new { id = user.Id }, user);//cria uma URI que retorna o usuário recém-criado
             return Accepted();
+
+        }
+        [AllowAnonymous]
+        [HttpGet("ranking")]
+        public IActionResult GetRankingData()
+        {
+            var ranking = userBLL.GetRankingData();
+            //return CreatedAtRoute("GetUser", new { id = user.Id }, user);//cria uma URI que retorna o usuário recém-criado
+            return new JsonResult(ranking);
 
         }
         [AllowAnonymous]
