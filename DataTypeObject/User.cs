@@ -20,5 +20,16 @@ namespace DataTypeObject
             this.Password = password;
             this.Name = name;
         }
+
+    public User(int id, string name, string email)
+    {
+      Id = id;
+      Name = name;
+      Email = email;
     }
+    public User()
+    {
+        
+    }
+  }
 }

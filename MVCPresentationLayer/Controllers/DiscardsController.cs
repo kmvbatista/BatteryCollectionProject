@@ -10,9 +10,7 @@ namespace MVCPresentationLayer.Controllers
     [ApiController]
     public class DiscardsController : Controller
     {
-
         private readonly IDISCARDCRUD discardBLL;
-
         public DiscardsController(IDISCARDCRUD _discardBLL)
         {
             this.discardBLL = _discardBLL;
@@ -32,9 +30,6 @@ namespace MVCPresentationLayer.Controllers
                 return BadRequest(ex);
             }
         }
-
-        // POST: api/Users
-
 
         [HttpPost]
         public IActionResult Create([FromBody] Discard discard)//indica que o usuário vem pelo body da requisição
@@ -61,7 +56,8 @@ namespace MVCPresentationLayer.Controllers
             {
                 ChartData alldiscards = discardBLL.GetChartsData(user);
                 GeneralData generalData = discardBLL.GetGeneralData(user);
-                var result = new { alldiscards, generalData };
+                var materialsDiscarded = discardBLL.GetPieChartData(user.Id);
+                var result = new { alldiscards, generalData, materialsDiscarded };
                 return Json(result);
             }
             catch (Exception ex)

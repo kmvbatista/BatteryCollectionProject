@@ -97,6 +97,12 @@ namespace BusinessLogicalLayer
             return new GeneralData { MostVisited = mostVisited, MostDiscarded = mostDiscarded, TotalPoints= totalPoints, MostDiscardedMonth = mostDiscardedMonth };
         }
 
+        public List<StringValuePair> GetPieChartData(int Id) {
+            var materialsDiscarded = discardsDbContext.Discards.Where(x => x.UserId == Id).GroupBy(d => d.MaterialName)
+            .Select(d => new StringValuePair() {Key =d.Key,Value= d.Count()}).ToList();
+            return materialsDiscarded;
+        }
+
         public Discard Find(int Id)
         {
             return discardsDbContext.Discards.Find(Id);
@@ -115,61 +121,61 @@ namespace BusinessLogicalLayer
                 discard.User.Name, weekOfMonth);
         }
 
-    private int getWeekOfMonth(int day)
-    {
-        if(day <= 7) {
-        return 1;
+        private int getWeekOfMonth(int day)
+        {
+            if(day <= 7) {
+            return 1;
+            }
+            else if(day <= 14) {
+            return 2;
+            }
+            else if(day <= 21) {
+            return 3;
+            }
+            return 4;
         }
-        else if(day <= 14) {
-        return 2;
-        }
-        else if(day <= 21) {
-        return 3;
-        }
-        return 4;
-    }
 
-    private  Material GetMaterial(int materialId)
-    {
-        try
+        private  Material GetMaterial(int materialId)
         {
-            MaterialBLL materialBLL = new MaterialBLL(discardsDbContext);
-            return  materialBLL.Find(materialId);
-        }
-        catch
-        {
-            throw new Exception();
-        }
-    }
-
-    private Place GetPlace(int placeId)
-    {
-        try
-        {
-            if(placeId<1) {
+            try
+            {
+                MaterialBLL materialBLL = new MaterialBLL(discardsDbContext);
+                return  materialBLL.Find(materialId);
+            }
+            catch
+            {
                 throw new Exception();
             }
-            PlaceBLL placeBLL = new PlaceBLL(discardsDbContext);
-            return placeBLL.Find(placeId);
         }
-        catch
-        {
-            throw new Exception();
-        }
-    }
 
-    private User GetUser(int userId)
-    {
-        try
+        private Place GetPlace(int placeId)
         {
-            UserBLL userBLL = new UserBLL(this.discardsDbContext);
-            return userBLL.Find(userId);
+            try
+            {
+                if(placeId<1) {
+                    throw new Exception();
+                }
+                PlaceBLL placeBLL = new PlaceBLL(discardsDbContext);
+                return placeBLL.Find(placeId);
+            }
+            catch
+            {
+                throw new Exception();
+            }
         }
-        catch(Exception ex)
+
+        private User GetUser(int userId)
         {
-            throw new Exception(ex.Message);
+            try
+            {
+                UserBLL userBLL = new UserBLL(this.discardsDbContext);
+                return userBLL.Find(userId);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-    }
 
     }
 }

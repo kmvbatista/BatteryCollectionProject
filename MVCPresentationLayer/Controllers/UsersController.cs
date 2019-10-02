@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebPresentationLayer.Controllers
 {
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -55,7 +56,6 @@ namespace WebPresentationLayer.Controllers
             return Accepted();
 
         }
-        [AllowAnonymous]
         [HttpGet("ranking")]
         public IActionResult GetRankingData()
         {
@@ -64,7 +64,6 @@ namespace WebPresentationLayer.Controllers
             return new JsonResult(ranking);
 
         }
-        [AllowAnonymous]
         // PUT: api/Users/5
         [HttpPut]
         public IActionResult UpdateUser([FromBody] User user)

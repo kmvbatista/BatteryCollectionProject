@@ -11,5 +11,6 @@ namespace DataTypeObject
         GeneralData GetGeneralData(User user);
         Discard Find(int Id);
         void Add(Discard discard);
+        List<StringValuePair> GetPieChartData(int Id);
     }
 }

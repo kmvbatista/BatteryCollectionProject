@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MVCPresentationLayer.Controllers
 {
+    [Authorize()]
     [Route("api/[controller]")]
     public class TokenController:Controller
     {
@@ -29,18 +30,17 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                // //User userFound = _userBLL.Authenticate(request.Email, request.Password);
-                var user = new User(3, "kennedy", "kennedymessias@gmail.com", "12345678", 0);
-                // if (userFound != null)
-                // kennedymessias@gmail.com
+                User user = _userBLL.Authenticate(request.Email, request.Password);
+                if (user != null) {
+                    User userToSend = new User(user.Id, user.Name, user.Email);
                     var resultado = new
                     {
                         token = getToken(request),
-                        user 
+                        userToSend 
                     };
                     return Json(resultado); 
-                // }
-                // return NotFound();e
+                }
+                return NotFound();
             }
             catch(Exception ex)
             {
