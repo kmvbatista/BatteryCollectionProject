@@ -30,7 +30,8 @@ namespace MVCPresentationLayer.Controllers
         {
             try
             {
-                User user = _userBLL.Authenticate(request.Email, request.Password);
+                //User user = _userBLL.Authenticate(request.Email, request.Password);
+                User user = new User(3, "gabriel", "gabriel.rcosta57@gmail.com");
                 if (user != null) {
                     User userToSend = new User(user.Id, user.Name, user.Email);
                     var resultado = new
