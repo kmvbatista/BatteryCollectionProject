@@ -51,11 +51,11 @@ namespace WebPresentationLayer.Controllers
             {
                 return BadRequest();
             }
-            userBLL.Add(user);
+             User userSigned =  userBLL.Add(user);
             //return CreatedAtRoute("GetUser", new { id = user.Id }, user);//cria uma URI que retorna o usuário recém-criado
-            return Accepted();
-
+            return new ObjectResult(userSigned);
         }
+        [AllowAnonymous]
         [HttpGet("ranking")]
         public IActionResult GetRankingData()
         {

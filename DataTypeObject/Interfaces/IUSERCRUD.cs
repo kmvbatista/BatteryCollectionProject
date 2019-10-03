@@ -6,7 +6,7 @@ namespace DataTypeObject
 {
     public interface IUSERCRUD
     {
-        void Add(User user);
+        User Add(User user);
 
         IEnumerable<User> GetAll();
 
