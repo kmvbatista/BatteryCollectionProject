@@ -26,11 +26,12 @@ namespace MVCPresentationLayer.Controllers
         
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult RequestToken([FromBody] User request)
+        public IActionResult Authenticate([FromBody] User request)
         {
             try
             {
-                User user = _userBLL.Authenticate(request.Email, request.Password);
+                string HashedPassword = HashUtils.HashPassword(request.Password);
+                User user = _userBLL.Authenticate(request.Email, HashedPassword);
                 if (user != null) {
                     User userToSend = new User(user.Id, user.Name, user.Email);
                     var resultado = new
