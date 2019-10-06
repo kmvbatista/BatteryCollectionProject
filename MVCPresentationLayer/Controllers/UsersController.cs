@@ -54,9 +54,9 @@ namespace WebPresentationLayer.Controllers
             user.Password= HashUtils.HashPassword(user.Password);
             userBLL.Add(user);
             //return CreatedAtRoute("GetUser", new { id = user.Id }, user);//cria uma URI que retorna o usuário recém-criado
-            return Accepted();
-
+            return new ObjectResult(user);
         }
+        [AllowAnonymous]
         [HttpGet("ranking")]
         public IActionResult GetRankingData()
         {

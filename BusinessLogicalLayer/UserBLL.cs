@@ -21,7 +21,7 @@ namespace BusinessLogicalLayer
             userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public void Add(User user)
+        public User Add(User user)
         {
 
             validateEmail(user.Email);
@@ -30,6 +30,8 @@ namespace BusinessLogicalLayer
 
             userDbContext.Add(user);
             userDbContext.SaveChanges();
+            user.Password = "";
+            return user;
         }
 
         public List<RankingData> GetRankingData() {
