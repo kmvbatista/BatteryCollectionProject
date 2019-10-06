@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using DataAccessLayer;
 using DataTypeObject;
-using System.Linq;
 using System;
 using System.Transactions;
 
@@ -10,10 +8,20 @@ namespace BusinessLogicalLayer
     public class DiscardBLL : IDISCARDCRUD
     {
         List<ErrorField> errors = new List<ErrorField>();
-        private readonly BatteryCollectorDbContext discardsDbContext;
-        public DiscardBLL(BatteryCollectorDbContext _discardsDbContext)
+        private readonly IUSERDAL userDal;
+        private readonly IDISCARDDAL discardDal;
+        private readonly IUSERCRUD userBll;
+        private readonly IMATERIALCRUD materialBll;
+        private readonly IPLACECRUD placeBll;
+
+        public DiscardBLL(IUSERDAL uSERDAL, IDISCARDDAL dISCARDDAL, IUSERCRUD _userBll,
+            IMATERIALCRUD _materialBll, IPLACECRUD placeBLL)
         {
-            discardsDbContext = _discardsDbContext;
+            this.userDal = uSERDAL;
+            this.discardDal = dISCARDDAL;
+            this.userBll = _userBll;
+            this.materialBll = _materialBll;
+            this.placeBll = placeBLL;
         }
 
         public void Add(Discard discard)
@@ -25,10 +33,9 @@ namespace BusinessLogicalLayer
                 {
                     validateDiscard(discard);
                     Discard mappedDiscard = GetMappedDiscard(discard);
-                    discardsDbContext.Add(mappedDiscard);
-                    UserBLL userBLL = new UserBLL(discardsDbContext);
+                    discardDal.Add(mappedDiscard);
+                    UserBLL userBLL = new UserBLL(userDal);
                     userBLL.UpdatePoints(mappedDiscard.User, discard.Quantity);
-                    discardsDbContext.SaveChanges();
                     scope.Complete();
                 }
             }
@@ -40,45 +47,20 @@ namespace BusinessLogicalLayer
 
         private void validateDiscard(Discard discard)
         {
-            Discard discardFound = discardsDbContext.Discards.FirstOrDefault(x => 
-            x.UserId == discard.UserId && x.Date.DayOfYear== discard.Date.DayOfYear &&
-            x.Date.Year == discard.Date.Year);
-            if(discardFound != null) {
-                throw new Exception("Você já depositou hoje");//personalizada
-            }
+            discardDal.validateDiscard(discard);
         }
 
-        public void Update(Discard userPoints)
+        public void UpdateUserPoints(User user)
         {
-            discardsDbContext.Update(userPoints);
-            discardsDbContext.SaveChanges();
-        }
-        public IEnumerable<Discard> GetMonthlyDiscards(User user)
-        {
-            return discardsDbContext.Discards.Where(x => x.Date.Month == DateTime.Now.Month);
+            userBll.Update(user);
         }
 
-        public IEnumerable<Discard> GetYearDiscards(User user)
-        {
-            return discardsDbContext.Discards.Where(x => x.Date.Year == DateTime.Now.Year);
-        }
-        public double GetTotalUserDiscards(User user)
-        {
-            return discardsDbContext.Discards.Where(x => x.UserId==user.Id).ToList().Count;
-        }
 
         public ChartData GetChartsData(User user)
         {
             try
             {
-                ChartData chartData = new ChartData(new int[12], new int[4]);
-                var yearList= discardsDbContext.Discards.Where(x => x.UserId == user.Id)
-                     .GroupBy(d => d.Date.Month).Select(x => new KeyValueDiscards(x.Key, x.Count())).ToList();
-                var weekList = discardsDbContext.Discards.Where(x => x.UserId == user.Id)
-                     .GroupBy(d => d.DayOfWeek).Select(x => new KeyValueDiscards(x.Key, x.Count())).ToList();
-                yearList.ForEach(x => chartData.YearPoints[x.Key-1] = x.Discards);
-                weekList.ForEach(x => chartData.WeekPoints[x.Key-1] = x.Discards);
-                return chartData;
+                return discardDal.GetChartsData(user);
             }
             catch
             {
@@ -88,24 +70,30 @@ namespace BusinessLogicalLayer
 
         public GeneralData GetGeneralData(User user)
         {
-            var mostVisited = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.PlaceName)
-                .OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
-            var mostDiscarded = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.MaterialName)
-                .OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
-            var totalPoints = discardsDbContext.Users.Find(user.Id).TotalPoints;
-            var mostDiscardedMonth = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.Date.Month).OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
-            return new GeneralData { MostVisited = mostVisited, MostDiscarded = mostDiscarded, TotalPoints= totalPoints, MostDiscardedMonth = mostDiscardedMonth };
+            return discardDal.GetGeneralData(user);
+        }
+
+        public IEnumerable<Discard> GetMonthlyDiscards(User user)
+        {
+            return discardDal.GetMonthlyDiscards(user);
+        }
+
+        public IEnumerable<Discard> GetYearDiscards(User user)
+        {
+            return discardDal.GetYearDiscards(user);
+        }
+        public double GetTotalUserDiscards(User user)
+        {
+            return discardDal.GetTotalUserDiscards(user);
         }
 
         public List<StringValuePair> GetPieChartData(int Id) {
-            var materialsDiscarded = discardsDbContext.Discards.Where(x => x.UserId == Id).GroupBy(d => d.MaterialName)
-            .Select(d => new StringValuePair() {Key =d.Key,Value= d.Count()}).ToList();
-            return materialsDiscarded;
+            return discardDal.GetPieChartData(Id);
         }
 
         public Discard Find(int Id)
         {
-            return discardsDbContext.Discards.Find(Id);
+            return discardDal.Find(Id);
         }
 
         public Discard GetMappedDiscard(Discard discard)
@@ -118,7 +106,7 @@ namespace BusinessLogicalLayer
             return new Discard(material, discard.MaterialId, user,
                 discard.UserId, place, discard.PlaceId, discard.Quantity,
                 date, discard.Material.Description, discard.Place.Name,
-                discard.User.Name, weekOfMonth);
+                weekOfMonth);
         }
 
         private int getWeekOfMonth(int day)
@@ -139,8 +127,7 @@ namespace BusinessLogicalLayer
         {
             try
             {
-                MaterialBLL materialBLL = new MaterialBLL(discardsDbContext);
-                return  materialBLL.Find(materialId);
+                return  materialBll.Find(materialId);
             }
             catch
             {
@@ -155,8 +142,7 @@ namespace BusinessLogicalLayer
                 if(placeId<1) {
                     throw new Exception();
                 }
-                PlaceBLL placeBLL = new PlaceBLL(discardsDbContext);
-                return placeBLL.Find(placeId);
+                return placeBll.Find(placeId);
             }
             catch
             {
@@ -168,14 +154,12 @@ namespace BusinessLogicalLayer
         {
             try
             {
-                UserBLL userBLL = new UserBLL(this.discardsDbContext);
-                return userBLL.Find(userId);
+                return userBll.Find(userId);
             }
             catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
     }
 }

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebPresentationLayer.Controllers
 {
-    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase

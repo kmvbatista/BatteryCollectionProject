@@ -11,12 +11,23 @@ public class BatteryCollectorDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-    modelBuilder.Entity<Discard>()
-                .Property(sample => sample.Date)
-                .HasColumnType("datetime");
-    
+        modelBuilder.Entity<Discard>()
+        .Property(sample => sample.Date)
+        .HasColumnType("datetime");
 
-    base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<User>()
+        .HasIndex(u => u.Email)
+                .IsUnique();
+
+        modelBuilder.Entity<User>()
+        .Property(u => u.Name)
+                .IsRequired();
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.Password)
+                      .IsRequired();
+
+            base.OnModelCreating(modelBuilder);
     }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,6 +44,6 @@ public class BatteryCollectorDbContext : DbContext
             public DbSet<Material> Materials { get; set; }
             public DbSet<Discard> Discards { get; set; }
             public DbSet<Place> Place { get; set; }
-
+            public DbSet<AskAndAnswers> AskAndAnswers { get; set; }
         }
 }

@@ -1,49 +1,22 @@
 ﻿using System.Collections.Generic;
-using DataAccessLayer;
 using DataTypeObject;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System;
-using BusinessLogicalLayer.Extensions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Newtonsoft.Json;
 
 namespace BusinessLogicalLayer
 {
     public class UserBLL : IUSERCRUD
     {
         List<ErrorField> errors = new List<ErrorField>();
-        private readonly BatteryCollectorDbContext userDbContext;
-        public UserBLL(BatteryCollectorDbContext _userDbContext)
+        private readonly IUSERDAL userDal;
+        public UserBLL(IUSERDAL _userDal)
         {
-            userDbContext = _userDbContext;
-            userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-        }
-
-        public User Add(User user)
-        {
-
-            validateEmail(user.Email);
-            user.Email = user.Email.ToLower();
-            //adicionar outros métodos de validação e implementá-los
-
-            userDbContext.Add(user);
-            userDbContext.SaveChanges();
-            user.Password = "";
-            return user;
-        }
-
-        public List<RankingData> GetRankingData() {
-            string[] array = new string[5];
-            var ranking = userDbContext.Users.
-            OrderByDescending(x => x.TotalPoints).Select(x => new RankingData(x.Name, x.TotalPoints)).ToList();
-            return ranking;
+            this.userDal = _userDal;
         }
 
         public User Find(int _Id)
         {
-            return userDbContext.Users.Find(_Id);
+            return userDal.Find(_Id);
         }
 
         public void UpdatePoints ( User user, int pointsToAdd) {
@@ -51,38 +24,18 @@ namespace BusinessLogicalLayer
             Update(user);
         }
 
-        public IEnumerable<User> GetAll()
-        {
-            //return userDbContext.Users.;
-            return userDbContext.Users.ToList();
-        }
-
         public void Remove(int Id)
         {
-            var userFound = userDbContext.Users.Find(Id);
-            userDbContext.Users.Remove(userFound);
-            userDbContext.SaveChanges();
+            var userFound = userDal.Find(Id);
+            userDal.Remove(Id);
         }
-
-        public User Update(User user)
-        {
-            int totalPoints = userDbContext.Users.Where(x => x.Id == user.Id).Select(x => x.TotalPoints).ToList()[0];
-            user.TotalPoints = totalPoints;
-            EntityEntry<User> response = userDbContext.Update(user);
-            userDbContext.SaveChanges();
-            return user;
-            throw new Exception();
-        }
+        
 
         public User Authenticate(string username, string password)
         {
-                validateEmail(username);
-                validatePasswordString(password);
-                if (errors.Count > 0)
-                {
-                    return null;
-                }
-                return userDbContext.Users.FirstOrDefault(u => u.Email == username && u.Password == password);
+            validateEmail(username);
+            validatePasswordString(password);
+            return userDal.Authenticate(username, password);
         }
 
         private void validatePasswordString(string password)
@@ -99,6 +52,28 @@ namespace BusinessLogicalLayer
             }
         }
 
+
+        public User Add(User user)
+        {
+            validateEmail(user.Email);
+            user.Email = user.Email.ToLower();
+            return userDal.Add(user);
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            return userDal.GetAll();
+        }
+
+        public User Update(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RankingData> GetRankingData()
+        {
+            throw new NotImplementedException();
+        }
 
         private void validateEmail(string Email)
         {
@@ -143,7 +118,5 @@ namespace BusinessLogicalLayer
                 errors.Add(error);
             }
         }
-
-        
     }
 }

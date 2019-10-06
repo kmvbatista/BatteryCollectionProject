@@ -12,13 +12,13 @@ namespace MVCPresentationLayer.Controllers
 {
     [Authorize()]
     [Route("api/[controller]")]
-    public class TokenController:Controller
+    public class LoginController:Controller
     {
         private readonly IConfiguration _configuration;
         private readonly IUSERCRUD _userBLL;
 
 
-        public TokenController(IConfiguration configuration, IUSERCRUD userBLL)
+        public LoginController(IConfiguration configuration, IUSERCRUD userBLL)
         {
             _configuration = configuration;
             _userBLL = userBLL;

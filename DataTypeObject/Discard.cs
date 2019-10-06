@@ -26,7 +26,7 @@ namespace DataTypeObject
         }
         public Discard(Material material, int materialId, User user,
             int userId, Place place, int placeId, int quantity, DateTime date,
-            string materialName, string placeName, string userName, int weekOfMonth)
+            string materialName, string placeName, int weekOfMonth)
         {
             this.Material = material;
             this.MaterialId = materialId;

@@ -1,32 +1,31 @@
-
+using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DataTypeObject;
-using DataTypeObject.Interfaces;
 
 namespace MVCPresentationLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FeatureHintController : Controller
+    public class AskAndAnswersController : Controller
     {
-        private readonly IFEATURE featureBLL;
-        public FeatureHintController(IFEATURE _featureBLL)
+        private readonly IAsksAndAnswersCrud asksAndAnswersBll;
+        public AskAndAnswersController(IAsksAndAnswersCrud _asksAndAnswersBll)
         {
-            this.featureBLL = _featureBLL;
+            this.asksAndAnswersBll = _asksAndAnswersBll;
         }
-        [HttpPost]
-        public IActionResult SendEmail([FromBody] FeatureHint feature)
+
+        [HttpGet]
+        public IActionResult GetAll()
         {
             try
             {
-                featureBLL.SendEmail(feature);
-                return Accepted();
+                return new OkObjectResult(asksAndAnswersBll.GetAll());
             }
             catch
             {
                 return BadRequest();
             }
         }
-
     }
 }

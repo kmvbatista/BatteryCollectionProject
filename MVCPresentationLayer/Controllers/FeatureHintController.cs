@@ -9,17 +9,17 @@ namespace MVCPresentationLayer.Controllers
     [ApiController]
     public class FeatureHintController : Controller
     {
-        private readonly IFEATURE featureBLL;
+        private readonly IFEATURE bll;
         public FeatureHintController(IFEATURE _featureBLL)
         {
-            this.featureBLL = _featureBLL;
+            bll = _featureBLL;
         }
         [HttpPost]
         public IActionResult SendEmail([FromBody] FeatureHint feature)
         {
             try
             {
-                featureBLL.SendEmail(feature);
+                bll.SendEmail(feature);
                 return Accepted();
             }
             catch
@@ -27,6 +27,5 @@ namespace MVCPresentationLayer.Controllers
                 return BadRequest();
             }
         }
-
     }
 }

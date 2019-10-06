@@ -40,7 +40,15 @@ namespace MVCPresentationLayer
             services.AddTransient<IDISCARDCRUD, DiscardBLL>();
             services.AddTransient<IPLACECRUD, PlaceBLL>();
             services.AddTransient<IFEATURE, FeatureHintBLL>();
-             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddTransient<IAsksAndAnswersCrud, AskAndAnswerBLL>();
+            services.AddTransient<IUSERDAL, UserDAL>();
+            services.AddTransient<IMATERIALDAL, MaterialDAL>();
+            services.AddTransient<IDISCARDDAL, DiscardsDal>();
+            services.AddTransient<IPLACEDAL, PlaceDAL>();
+            services.AddTransient<IAsksAndAnswersDAL, AskAndAnswersDAL>();
+            
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

@@ -1,43 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataAccessLayer;
 using DataTypeObject;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogicalLayer
 {
     public class MaterialBLL : IMATERIALCRUD
     {
         List<ErrorField> errors = new List<ErrorField>();
-        private readonly BatteryCollectorDbContext materialsDbContext;
-        public MaterialBLL(BatteryCollectorDbContext _materialsDbContext)
+        private readonly IMATERIALDAL materialDal;
+        public MaterialBLL(IMATERIALDAL _materialDal)
         {
-            materialsDbContext = _materialsDbContext;
-        }
-        public MaterialBLL()
-        {
-
-        }
-        public async Task AddAsync(Material material)
-        {
-            try
-            {
-                await materialsDbContext.Materials.AddAsync(material);
-                await materialsDbContext.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
+            this.materialDal = _materialDal;
         }
 
         public  Material Find(int Id)
         {
             try
             {
-                return  materialsDbContext.Materials.Find(Id);
+                return materialDal.Find(Id);
             }
             catch
             {
@@ -45,11 +26,11 @@ namespace BusinessLogicalLayer
             }
         }
 
-        public async Task<IEnumerable<Material>> GetAll()
+        public IEnumerable<Material> GetAll()
         {
             try
             {
-                return await materialsDbContext.Materials.ToListAsync();
+                return materialDal.GetAll();
             }
             catch (Exception ex)
             {

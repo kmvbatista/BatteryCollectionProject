@@ -19,20 +19,6 @@ namespace MVCPresentationLayer.Controllers
         {
             this.placeBLL = placeBLL;
         }
-        [HttpPost]
-        public IActionResult Add([FromBody] Place place)
-        {
-            try
-            {
-                VerifyPlace(place);
-                 placeBLL.Add(place);
-                return Accepted();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
 
         private void VerifyPlace(Place place)
         {
@@ -42,20 +28,6 @@ namespace MVCPresentationLayer.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult Remove(int Id)
-        {
-            try
-            {
-                placeBLL.Remove(Id);
-                return Accepted();
-
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
         [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
@@ -63,19 +35,6 @@ namespace MVCPresentationLayer.Controllers
             try
             {
                 return new OkObjectResult(placeBLL.GetAll());
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
-        [HttpPut]
-        public IActionResult Update([FromBody] Place place)
-        {
-            try
-            {
-                placeBLL.Update(place);
-                return Accepted();
             }
             catch
             {
