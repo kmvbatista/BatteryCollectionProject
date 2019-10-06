@@ -18,12 +18,12 @@ namespace BusinessLogicalLayer
         {
 
         }
-        public async Task Add(Place place)
+        public void Add(Place place)
         {
             try
             {
-                await placeDbContext.Place.AddAsync(place);
-                await placeDbContext.SaveChangesAsync();
+                placeDbContext.Place.Add(place);
+                placeDbContext.SaveChanges();
             }
             catch(Exception)
             {
@@ -43,20 +43,16 @@ namespace BusinessLogicalLayer
             }
         }
 
-        public async Task<IEnumerable<Place>> GetAll()
+        public IEnumerable<Place> GetAll()
         {
             try
             {
-                return await GetListAsync();
+                return placeDbContext.Place.ToList();
             }
             catch (Exception)
             {
                 throw new Exception();
             }
-        }
-        private Task<List<Place>> GetListAsync()
-        {
-            return Task.Run(() => placeDbContext.Place.ToList());
         }
 
         public void Remove(int Id)

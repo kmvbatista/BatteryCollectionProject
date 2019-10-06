@@ -7,9 +7,9 @@ namespace DataTypeObject
 {
     public interface IPLACECRUD
     {
-        Task Add(Place place);
+        void Add(Place place);
 
-        Task<IEnumerable<Place>> GetAll();
+        IEnumerable<Place> GetAll();
 
         Place Find(int Id);
 

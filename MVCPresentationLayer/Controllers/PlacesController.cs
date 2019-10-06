@@ -56,6 +56,7 @@ namespace MVCPresentationLayer.Controllers
                 return BadRequest();
             }
         }
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {
