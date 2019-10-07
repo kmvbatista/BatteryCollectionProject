@@ -49,7 +49,11 @@ namespace DataAccessLayer
             EntityEntry<User> response = userDbContext.Update(user);
             userDbContext.SaveChanges();
             return user;
-            throw new Exception();
+        }
+
+        public void UpdateUserPoints(User user) {
+            userDbContext.Users.Update(user);
+            userDbContext.SaveChanges();
         }
 
         public User Authenticate(string username, string password)

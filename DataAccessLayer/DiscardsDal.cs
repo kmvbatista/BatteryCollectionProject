@@ -18,6 +18,7 @@ namespace DataAccessLayer
         public void Add(Discard discard)
         {
             discardsDbContext.Add(discard);
+            discardsDbContext.SaveChanges();
         }
 
         public Discard Find(int Id)

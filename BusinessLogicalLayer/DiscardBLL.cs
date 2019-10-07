@@ -34,8 +34,7 @@ namespace BusinessLogicalLayer
                     validateDiscard(discard);
                     Discard mappedDiscard = GetMappedDiscard(discard);
                     discardDal.Add(mappedDiscard);
-                    UserBLL userBLL = new UserBLL(userDal);
-                    userBLL.UpdatePoints(mappedDiscard.User, discard.Quantity);
+                    userBll.UpdatePoints(mappedDiscard.User);
                     scope.Complete();
                 }
             }

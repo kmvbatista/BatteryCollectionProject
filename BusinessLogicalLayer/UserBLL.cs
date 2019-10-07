@@ -19,9 +19,9 @@ namespace BusinessLogicalLayer
             return userDal.Find(_Id);
         }
 
-        public void UpdatePoints ( User user, int pointsToAdd) {
-            user.TotalPoints += pointsToAdd;
-            Update(user);
+        public void UpdatePoints ( User user) {
+            user.TotalPoints += 1;
+            userDal.UpdateUserPoints(user);
         }
 
         public void Remove(int Id)
@@ -30,6 +30,7 @@ namespace BusinessLogicalLayer
             userDal.Remove(Id);
         }
         
+
 
         public User Authenticate(string username, string password)
         {
@@ -62,17 +63,32 @@ namespace BusinessLogicalLayer
 
         public IEnumerable<User> GetAll()
         {
-            return userDal.GetAll();
+            try{
+                return userDal.GetAll();
+            }
+            catch(Exception ex) {
+                throw new Exception(ex.Message);
+            }
         }
 
         public User Update(User user)
         {
-            throw new NotImplementedException();
+            try{
+                return userDal.Update(user);
+            }
+            catch(Exception ex) {
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<RankingData> GetRankingData()
         {
-            throw new NotImplementedException();
+            try {
+                return userDal.GetRankingData();
+            }
+            catch(Exception) {
+                throw new Exception();
+            }
         }
 
         private void validateEmail(string Email)

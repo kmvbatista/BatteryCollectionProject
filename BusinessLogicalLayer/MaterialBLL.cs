@@ -37,16 +37,5 @@ namespace BusinessLogicalLayer
                 throw new Exception(""+ex);
             }
         }
-       
-
-        public void Remove(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Material material)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

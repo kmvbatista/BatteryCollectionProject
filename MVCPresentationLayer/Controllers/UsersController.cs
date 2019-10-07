@@ -59,10 +59,13 @@ namespace WebPresentationLayer.Controllers
         [HttpGet("ranking")]
         public IActionResult GetRankingData()
         {
-            var ranking = userBLL.GetRankingData();
-            //return CreatedAtRoute("GetUser", new { id = user.Id }, user);//cria uma URI que retorna o usuário recém-criado
-            return new JsonResult(ranking);
-
+            try{
+                var ranking = userBLL.GetRankingData();
+                return new JsonResult(ranking);
+            }
+            catch(Exception) {
+                return BadRequest();
+            }
         }
         // PUT: api/Users/5
         [HttpPut]
