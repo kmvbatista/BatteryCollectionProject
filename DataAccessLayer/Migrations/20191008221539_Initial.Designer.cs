@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(BatteryCollectorDbContext))]
-    [Migration("20190929005651_agea")]
-    partial class agea
+    [Migration("20191008221539_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace DataAccessLayer.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DataTypeObject.AskAndAnswers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AskAndAnswers");
+                });
 
             modelBuilder.Entity("DataTypeObject.Discard", b =>
                 {
@@ -30,9 +45,15 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
+                    b.Property<int>("DayOfWeek");
+
                     b.Property<int>("MaterialId");
 
+                    b.Property<string>("MaterialName");
+
                     b.Property<int>("PlaceId");
+
+                    b.Property<string>("PlaceName");
 
                     b.Property<int>("Quantity");
 
@@ -40,11 +61,14 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaterialId");
+                    b.HasIndex("MaterialId")
+                        .IsUnique();
 
-                    b.HasIndex("PlaceId");
+                    b.HasIndex("PlaceId")
+                        .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Discards");
                 });
@@ -87,13 +111,19 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .IsRequired();
 
                     b.Property<int>("TotalPoints");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -101,18 +131,18 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataTypeObject.Discard", b =>
                 {
                     b.HasOne("DataTypeObject.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
+                        .WithOne("Discard")
+                        .HasForeignKey("DataTypeObject.Discard", "MaterialId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataTypeObject.Place", "Place")
-                        .WithMany()
-                        .HasForeignKey("PlaceId")
+                        .WithOne("Discard")
+                        .HasForeignKey("DataTypeObject.Discard", "PlaceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataTypeObject.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Discard")
+                        .HasForeignKey("DataTypeObject.Discard", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

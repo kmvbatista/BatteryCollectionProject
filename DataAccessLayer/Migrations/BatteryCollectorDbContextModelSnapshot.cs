@@ -59,11 +59,14 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaterialId");
+                    b.HasIndex("MaterialId")
+                        .IsUnique();
 
-                    b.HasIndex("PlaceId");
+                    b.HasIndex("PlaceId")
+                        .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Discards");
                 });
@@ -126,18 +129,18 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataTypeObject.Discard", b =>
                 {
                     b.HasOne("DataTypeObject.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
+                        .WithOne("Discard")
+                        .HasForeignKey("DataTypeObject.Discard", "MaterialId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataTypeObject.Place", "Place")
-                        .WithMany()
-                        .HasForeignKey("PlaceId")
+                        .WithOne("Discard")
+                        .HasForeignKey("DataTypeObject.Discard", "PlaceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataTypeObject.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Discard")
+                        .HasForeignKey("DataTypeObject.Discard", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

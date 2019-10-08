@@ -9,6 +9,20 @@ namespace DataAccessLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AskAndAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AskAndAnswers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Materials",
                 columns: table => new
                 {
@@ -28,8 +42,8 @@ namespace DataAccessLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    Latitude = table.Column<int>(nullable: false),
-                    Longitude = table.Column<int>(nullable: false)
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,9 +56,9 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: false),
                     TotalPoints = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -62,7 +76,10 @@ namespace DataAccessLayer.Migrations
                     UserId = table.Column<int>(nullable: false),
                     PlaceId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime", nullable: false),
+                    MaterialName = table.Column<string>(nullable: true),
+                    PlaceName = table.Column<string>(nullable: true),
+                    DayOfWeek = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,21 +107,34 @@ namespace DataAccessLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Discards_MaterialId",
                 table: "Discards",
-                column: "MaterialId");
+                column: "MaterialId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Discards_PlaceId",
                 table: "Discards",
-                column: "PlaceId");
+                column: "PlaceId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Discards_UserId",
                 table: "Discards",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AskAndAnswers");
+
             migrationBuilder.DropTable(
                 name: "Discards");
 
