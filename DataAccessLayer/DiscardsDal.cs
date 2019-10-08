@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DataTypeObject;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer
 {
@@ -17,8 +17,10 @@ namespace DataAccessLayer
 
         public void Add(Discard discard)
         {
-            discardsDbContext.Add(discard);
-            discardsDbContext.SaveChanges();
+            discardsDbContext.Database.ExecuteSqlCommand($@"
+                insert into Discards values({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})
+            ",1, discard.UserId, 5, discard.Quantity,
+            discard.Date, discard.MaterialName, discard.PlaceName, discard.DayOfWeek );
         }
 
         public Discard Find(int Id)
@@ -40,13 +42,17 @@ namespace DataAccessLayer
 
         public GeneralData GetGeneralData(User user)
         {
-            var mostVisited = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.PlaceName)
-                .OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
-            var mostDiscarded = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.MaterialName)
-                .OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
-            var totalPoints = discardsDbContext.Users.Find(user.Id).TotalPoints;
-            var mostDiscardedMonth = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.Date.Month).OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
-            return new GeneralData { MostVisited = mostVisited, MostDiscarded = mostDiscarded, TotalPoints = totalPoints, MostDiscardedMonth = mostDiscardedMonth };
+            Discard discardsQuantity = discardsDbContext.Discards.Where(x => x.UserId == user.Id).FirstOrDefault();
+            if(discardsQuantity != null) {
+                var mostVisited = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.PlaceName)
+                    .OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
+                var mostDiscarded = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.MaterialName)
+                    .OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
+                var totalPoints = discardsDbContext.Users.Find(user.Id).TotalPoints;
+                var mostDiscardedMonth = discardsDbContext.Discards.Where(x => x.UserId == user.Id).GroupBy(d => d.Date.Month).OrderByDescending(gp => gp.Count()).Take(1).Select(g => g.Key).ToArray()[0];
+                return new GeneralData { MostVisited = mostVisited, MostDiscarded = mostDiscarded, TotalPoints = totalPoints, MostDiscardedMonth = mostDiscardedMonth };
+            }
+            return new GeneralData {MostVisited = "Nenhum", MostDiscarded = "Nenhum", TotalPoints = 0, MostDiscardedMonth = 0};
         }
 
         public IEnumerable<Discard> GetMonthlyDiscards(User user)

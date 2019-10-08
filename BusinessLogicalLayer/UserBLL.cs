@@ -74,6 +74,7 @@ namespace BusinessLogicalLayer
         public User Update(User user)
         {
             try{
+                user.Password = HashUtils.HashPassword(user.Password);
                 return userDal.Update(user);
             }
             catch(Exception ex) {

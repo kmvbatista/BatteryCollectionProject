@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using DataTypeObject;
+using System.Reflection;
 
 namespace DataAccessLayer
 {
@@ -26,6 +27,8 @@ public class BatteryCollectorDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Password)
                       .IsRequired();
+
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(modelBuilder);
     }

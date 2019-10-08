@@ -102,10 +102,10 @@ namespace BusinessLogicalLayer
             User user = GetUser(discard.UserId);
             DateTime date = DateTime.Now;
             int weekOfMonth = getWeekOfMonth(date.Day);
-            return new Discard(material, discard.MaterialId, user,
-                discard.UserId, place, discard.PlaceId, discard.Quantity,
-                date, discard.Material.Description, discard.Place.Name,
-                weekOfMonth);
+            return new Discard(
+                material, material.Id, user,
+                user.Id, place, place.Id, discard.Quantity, 
+                date, material.Description, place.Name, weekOfMonth);
         }
 
         private int getWeekOfMonth(int day)
