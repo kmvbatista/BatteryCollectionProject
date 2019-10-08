@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class NewBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -108,19 +108,19 @@ namespace DataAccessLayer.Migrations
                 name: "IX_Discards_MaterialId",
                 table: "Discards",
                 column: "MaterialId",
-                unique: true);
+                unique: false);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Discards_PlaceId",
                 table: "Discards",
                 column: "PlaceId",
-                unique: true);
+                unique: false);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Discards_UserId",
                 table: "Discards",
                 column: "UserId",
-                unique: true);
+                unique: false);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",

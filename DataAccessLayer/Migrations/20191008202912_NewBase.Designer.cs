@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(BatteryCollectorDbContext))]
-    [Migration("20191008221539_Initial")]
-    partial class Initial
+    [Migration("20191008202912_NewBase")]
+    partial class NewBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
