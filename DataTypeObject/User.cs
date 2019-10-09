@@ -11,7 +11,6 @@ namespace DataTypeObject
         public string Email { get; set; }
         public string Password { get; set; }
         public int TotalPoints { get; set; }
-        public Discard Discard { get; set; }
 
         public User(int id, string name, string email, string password, int totalPoints )
         {

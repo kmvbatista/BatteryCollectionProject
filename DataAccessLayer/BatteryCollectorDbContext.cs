@@ -16,19 +16,6 @@ public class BatteryCollectorDbContext : DbContext
         .Property(sample => sample.Date)
         .HasColumnType("datetime");
 
-        modelBuilder.Entity<User>()
-        .HasIndex(u => u.Email)
-                .IsUnique();
-
-        modelBuilder.Entity<User>()
-        .Property(u => u.Name)
-                .IsRequired();
-
-        modelBuilder.Entity<User>()
-            .Property(u => u.Password)
-                      .IsRequired();
-
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(modelBuilder);
     }
@@ -44,9 +31,9 @@ public class BatteryCollectorDbContext : DbContext
             }
 
             public DbSet<User> Users { get; set; }
+            public DbSet<AskAndAnswers> AskAndAnswers { get; set; }
             public DbSet<Material> Materials { get; set; }
             public DbSet<Discard> Discards { get; set; }
             public DbSet<Place> Place { get; set; }
-            public DbSet<AskAndAnswers> AskAndAnswers { get; set; }
         }
 }

@@ -17,10 +17,8 @@ namespace DataAccessLayer
 
         public void Add(Discard discard)
         {
-            discardsDbContext.Database.ExecuteSqlCommand($@"
-                insert into Discards values({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})
-            ",1, 1, 1, 10,
-            DateTime.Now, "Óleo", "prefeitura", 2);
+            discardsDbContext.Discards.Add(discard);
+            discardsDbContext.SaveChanges();
         }
 
         public Discard Find(int Id)

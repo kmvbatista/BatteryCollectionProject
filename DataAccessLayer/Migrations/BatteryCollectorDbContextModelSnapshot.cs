@@ -59,15 +59,6 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaterialId")
-                        .IsUnique();
-
-                    b.HasIndex("PlaceId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("Discards");
                 });
 
@@ -109,39 +100,15 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
-                    b.Property<string>("Password")
-                        .IsRequired();
+                    b.Property<string>("Password");
 
                     b.Property<int>("TotalPoints");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("DataTypeObject.Discard", b =>
-                {
-                    b.HasOne("DataTypeObject.Material", "Material")
-                        .WithOne("Discard")
-                        .HasForeignKey("DataTypeObject.Discard", "MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DataTypeObject.Place", "Place")
-                        .WithOne("Discard")
-                        .HasForeignKey("DataTypeObject.Discard", "PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DataTypeObject.User", "User")
-                        .WithOne("Discard")
-                        .HasForeignKey("DataTypeObject.Discard", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

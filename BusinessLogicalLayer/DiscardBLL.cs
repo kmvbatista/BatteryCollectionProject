@@ -32,9 +32,10 @@ namespace BusinessLogicalLayer
                 using (TransactionScope scope = new TransactionScope())
                 {
                     validateDiscard(discard);
-                    Discard mappedDiscard = GetMappedDiscard(discard);
+                    User user = this.GetUser(discard.UserId);
+                    Discard mappedDiscard = GetMappedDiscard(discard, user);
                     discardDal.Add(mappedDiscard);
-                    userBll.UpdatePoints(mappedDiscard.User);
+                    userBll.UpdatePoints(user);
                     scope.Complete();
                 }
             }
@@ -95,17 +96,14 @@ namespace BusinessLogicalLayer
             return discardDal.Find(Id);
         }
 
-        public Discard GetMappedDiscard(Discard discard)
+        public Discard GetMappedDiscard(Discard discard, User user)
         {
-            Place place =  GetPlace(discard.PlaceId);
-            Material material =  GetMaterial(discard.MaterialId);
-            User user = GetUser(discard.UserId);
             DateTime date = DateTime.Now;
+            Material material = GetMaterial(discard.MaterialId);
+            Place place = GetPlace(discard.PlaceId);
             int weekOfMonth = getWeekOfMonth(date.Day);
-            return new Discard(
-                material, material.Id, user,
-                user.Id, place, place.Id, discard.Quantity, 
-                date, material.Description, place.Name, weekOfMonth);
+            return new Discard(discard.MaterialId, discard.UserId, discard.PlaceId,
+                discard.Quantity, DateTime.Now, material.Description, place.Name, weekOfMonth);
         }
 
         private int getWeekOfMonth(int day)
