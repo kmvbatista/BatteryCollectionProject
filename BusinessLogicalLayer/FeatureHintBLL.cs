@@ -41,7 +41,7 @@ namespace BusinessLogicalLayer
             {
                 return $@"Usuario {feature.Sender.Name}, portador do email {feature.Sender.Email}
                 solicitou cadastro do local {feature.Local}, endereço: {feature.Adress}
-                 e o seguinte material relacionado: {feature.Material}";
+                 e o seguinte material relacionado: {feature.Description}";
             }
             
         }
